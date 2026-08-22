@@ -15,8 +15,8 @@ const Topbar = ({setNavActive}) => {
         </div>
 
         <div className='flex items-center gap-2 text-xs lg:text-sm lg:gap-4'>
-          <button onClick={() => navigate('login')} className='border border-gray-200 py-1 px-2 rounded-sm cursor-pointer hover:bg-gray-300 lg:py-2 lg:px-3 lg:rounded-md'>Sgin in</button>
-          <button onClick={() => navigate('login')} className='bg-gray-200 py-1 px-2 rounded-sm cursor-pointer hover:bg-gray-300 lg:py-2 lg:px-3 lg:rounded-md'>Sgin up</button>
+          <button onClick={() => navigate('/login')} className='border border-gray-200 py-1 px-2 rounded-sm cursor-pointer hover:bg-gray-300 lg:py-2 lg:px-3 lg:rounded-md'>Sgin in</button>
+          <button onClick={() => navigate('/register')} className='bg-gray-200 py-1 px-2 rounded-sm cursor-pointer hover:bg-gray-300 lg:py-2 lg:px-3 lg:rounded-md'>Sgin up</button>
         </div>
       </div>
     </>
