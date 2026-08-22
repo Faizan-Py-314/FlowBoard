@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { RiSwap3Fill, RiCloseFill, RiHome9Fill, RiTodoLine, RiTrelloLine, RiCalendarTodoLine, RiSettings5Line } from "@remixicon/react";
 
 
-const Navbar = () => {
+const Navbar = ({navActive, setNavActive}) => {
     const [activeOption, setActiveOption] = useState('Home')
-    const [navActive, setNavActive] = useState(true)
 
   return (
     <>
