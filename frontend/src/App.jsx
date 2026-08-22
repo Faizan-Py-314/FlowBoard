@@ -1,16 +1,23 @@
 import React, { useState }  from 'react'
-import Navbar from './components/Navbar'
-import Topbar from './components/Topbar'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import MainLayout from './layouts/MainLayout'
+import Home from './pages/Home'
+import LoginPage from './pages/LoginPage'
+
 
 function App() {
-    const [navActive, setNavActive] = useState(false)
 
   return (
     <>
-      <div className='flex'>
-        <Navbar navActive={navActive} setNavActive={setNavActive} />
-        <Topbar setNavActive={setNavActive} />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout/>}>
+            <Route path='/' element={<Home/>} />
+          </Route>
+
+          <Route path='login' element={ <LoginPage/> }/>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
