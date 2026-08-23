@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import Search from './components/Search'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route element={<MainLayout/>}>
             <Route path='/' element={<Home/>} />
+            <Route path='/tasks' element={<Search />} />
           </Route>
 
           <Route path='/login' element={ <LoginPage/> }/>
