@@ -6,10 +6,16 @@ import Dropdown from './Dropdown'
 const Search = () => {
 
     const levelOptions = [
-    { label: "Beginner", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
-    { label: "Intermediate", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
-    { label: "Advanced", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
-  ];
+        { label: "Beginner", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+        { label: "Intermediate", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+        { label: "Advanced", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+    ];
+
+    const statusOptions = [
+        { label: "Future", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+        { label: "InProgress", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+        { label: "Completed", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+    ];
 
   return (
     <div className='mx-5 mt-3 md:flex md:items-center w-[90%] md:w-[90%] md:mt-4 md:mr-0 md:gap-2'>
@@ -18,8 +24,8 @@ const Search = () => {
             <input className='[&::-webkit-search-cancel-button]:appearance-none focus:outline-none w-full' type="search" placeholder='Search' />
         </div>
         <div className='flex gap-2 mt-2 md:mt-0'>
-            <Dropdown className='text-xs h-8 md:text-sm md:h-10 ' postion='left' title="Level" items={levelOptions} />
-            <Dropdown className='text-xs h-8 md:text-sm md:h-10' title="Status" items={levelOptions} />
+            <Dropdown className='text-xs h-8 md:text-sm md:h-10 ' postion='left-0' title="Level" items={levelOptions} />
+            <Dropdown className='text-xs h-8 md:text-sm md:h-10' title="Status" items={statusOptions} />
         </div>
     </div>
   )
