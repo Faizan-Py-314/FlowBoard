@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import Search from './components/Search'
 import TaskPage from './pages/TaskPage'
+import ProjectsPage from './pages/ProjectsPage'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route element={<MainLayout/>}>
             <Route path='/' element={<Home/>} />
             <Route path='/tasks' element={<TaskPage />} />
+            <Route path='/projects' element={<ProjectsPage />} />
           </Route>
 
           <Route path='/login' element={ <LoginPage/> }/>
