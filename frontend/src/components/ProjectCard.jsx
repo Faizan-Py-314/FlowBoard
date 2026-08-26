@@ -18,10 +18,10 @@ const ProjectCard = () => {
                 
             </div>
             <hr className='text-gray-200' />
-            <span className='text-sm text-gray-600'>Details and Requirements</span>
+            <span className='text-sm text-gray-600 cursor-pointer hover:underline w-fit'>Details and Requirements</span>
             <div className='flex gap-2 items-center mt-2'>
-                <button className='py-2 px-3 bg-black text-white rounded-md text-sm'>View Details</button>
-                <button className='py-2 px-3 bg-black text-white rounded-md text-sm'>Add Details</button>
+                <button className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>View Details</button>
+                <button className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>Add Details</button>
             </div>
         </div>
     </div>
