@@ -31,7 +31,7 @@ def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
         name = user.name,
         username = user.username,
         email = user.email,
-        hash_password = hash_password(user.hash_password)
+        hash_password = hash_password(user.password)
     )
 
     db.add(new_user)

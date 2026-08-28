@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { RiLoginBoxLine, RiMailFill, RiDoorLockBoxFill, RiEyeLine, RiEyeCloseLine } from "@remixicon/react";
+import React, { useContext, useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
+import { AuthContext } from '../contexts/AuthContext'
+import { RiLoginBoxLine, RiMailFill, RiDoorLockBoxFill, RiEyeLine, RiEyeCloseLine } from "@remixicon/react";
 
 
 const LoginPage = () => {
@@ -8,6 +9,7 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({username:'', password:''})
 
   const navigate = useNavigate()
+  const { login } = useContext(AuthContext)
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value})
@@ -15,7 +17,8 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(formData.username, formData.password)
+    // console.log(formData.username, formData.password)
+    login(formData.username, formData.password)
     navigate('/')
   }
 

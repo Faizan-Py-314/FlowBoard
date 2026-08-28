@@ -6,7 +6,7 @@ class UserBase(BaseModel):
     email: EmailStr
 
 class UserCreate(UserBase):
-    hash_password: str
+    password: str
 
 class UserResponse(UserBase):
     model_config = ConfigDict(from_attributes=True)
