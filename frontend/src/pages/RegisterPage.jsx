@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { RiUserAddFill, RiMailFill, RiDoorLockBoxFill, RiEyeLine, RiEyeCloseLine, RiUser6Fill } from "@remixicon/react";
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 const RegisterPage = () => {
@@ -9,7 +9,6 @@ const RegisterPage = () => {
   const [formData, setFormData] = useState({ name: '', username: '', email: '', password: '' })
   const [inputError, setInputError] = useState('NOError')
 
-  const navigate = useNavigate()
   const { register } = useContext(AuthContext)
 
   const handleChange = (e) => {
@@ -24,7 +23,6 @@ const RegisterPage = () => {
     else if (formData.email.length < 1) { setInputError('MailEmptyError'); return }
     else if (formData.password.length < 8) { setInputError('PasswordError'); return }
 
-    // console.log(formData.name, formData.username, formData.email, formData.password)
     register(formData.name, formData.username, formData.email, formData.password)
   }
 

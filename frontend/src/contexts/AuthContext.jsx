@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             const getUser = async () => {
-                const user = getUserInfo(token)
+                const user = await getUserInfo(token)
                 setUser(user)
             }
             getUser();
