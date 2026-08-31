@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
@@ -26,4 +27,6 @@ class Project(BaseModel):
 class ProjectResponse(Project):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    last_change: datetime
+    created_at: datetime
 

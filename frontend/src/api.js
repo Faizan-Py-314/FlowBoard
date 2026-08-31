@@ -44,4 +44,15 @@ const getUserInfo = async (token) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo}
+const fetchProjectsData = async (token) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/projects`, 
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('fetch Project data error', error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData}
