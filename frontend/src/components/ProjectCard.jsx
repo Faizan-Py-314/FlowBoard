@@ -1,5 +1,4 @@
 import React from 'react'
-import { RiTimeLine } from "@remixicon/react";
 
 const ProjectCard = ({ project }) => {
 
@@ -32,6 +31,19 @@ const ProjectCard = ({ project }) => {
         return 'just now';
     };
 
+    const tag_colors = {
+        tag1: ['text-zinc-500', 'bg-zinc-100'],
+        Future: ['text-zinc-500', 'bg-zinc-100'],
+        inProgress: ['text-amber-500', 'bg-amber-100'],
+        Completed: ['text-emerald-500', 'bg-emerald-100'],
+        Beginner: ['text-sky-500', 'bg-sky-100'],
+        Intermediate: ['text-violet-500', 'bg-violet-100'],
+        Advanced: ['text-rose-500', 'bg-rose-100'],
+        Python: ['text-yellow-500', 'bg-yellow-100'],
+        FastAPI: ['text-teal-500', 'bg-teal-100'],
+        React: ['text-blue-500', 'bg-blue-100'],
+    }
+
     if (!project) return null;
 
     const tags = project.tags.length > 3? project.tags.slice(0, 3):project.tags
@@ -40,7 +52,7 @@ const ProjectCard = ({ project }) => {
     <div className='border border-gray-400 p-4 rounded-lg w-full'>
         <div className='flex gap-2 items-cente text-xs'>
             {tags.map((tag, index) => (
-                <span key={index} className='py-1 px-2 bg-purple-100 rounded-sm text-purple-500'>{tag}</span>
+                <span key={index} className={`py-1 px-2 rounded-sm ${tag_colors[`${tag}`][0]} ${tag_colors[`${tag}`][1]}`}>{tag}</span>
             ))}
         </div>
 

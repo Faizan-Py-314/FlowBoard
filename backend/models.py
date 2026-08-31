@@ -1,4 +1,5 @@
 from datetime import datetime, UTC
+from zoneinfo import ZoneInfo
 from typing import List
 from sqlalchemy import Integer, String, Text, JSON, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -24,8 +25,8 @@ class Project(Base):
     description: Mapped[str] = mapped_column(Text, nullable=False)
     requirements: Mapped[list[str]] = mapped_column(JSON, nullable=False)
     tags: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=[])
-    last_change: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
+    last_change: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC).astimezone(ZoneInfo("Asia/Karachi")))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC).astimezone(ZoneInfo("Asia/Karachi")))
 
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id', ondelete='CASCADE'),
