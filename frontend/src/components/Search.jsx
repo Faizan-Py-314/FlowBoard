@@ -18,7 +18,7 @@ const Search = () => {
     ];
 
   return (
-    <div className='mx-5 mt-3 md:flex md:items-center w-[90%] md:w-[90%] md:mt-4 md:mr-0 md:gap-2'>
+    <div className=' mt-3 md:flex md:items-center w-full md:w-[90%] md:mt-4 md:mr-0 md:gap-2'>
         <div className='flex items-center gap-2 border border-gray-300 rounded-md px-2 py-2 text-sm w-full md:w-[60%] md:text-base'>
             <RiSearchLine className='w-5.5 h-5.5 text-gray-500' />
             <input className='[&::-webkit-search-cancel-button]:appearance-none focus:outline-none w-full' type="search" placeholder='Search' />
