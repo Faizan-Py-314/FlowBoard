@@ -1,5 +1,6 @@
-from sqlalchemy import Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from typing import List
+from sqlalchemy import Integer, String, Text, JSON, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
@@ -12,3 +13,21 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(200), unique=True, nullable=False)
     hash_password: Mapped[str] = mapped_column(String(200), nullable=False)
 
+    projects: Mapped[List[Project]] = relationship(back_populates='owner', cascade='all, delete-orphan')
+
+class Project(Base):
+    __tablename__ = 'projects'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, unique=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    requirements: Mapped[list[str]] = mapped_column(JSON, nullable=False)
+    tags: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=[])
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True
+    )
+
+    owner: Mapped[User] = relationship(back_populates='projects')
