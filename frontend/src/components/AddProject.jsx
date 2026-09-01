@@ -1,13 +1,41 @@
 import { useState, useRef, useEffect } from 'react'
 import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
 
-const AddProject = () => {
+const AddProject = ({ isOpen = true, setIsOpen }) => {
+    const [isMounted, setIsMounted] = useState(isOpen)
+    const [isVisible, setIsVisible] = useState(false)
     const [requirements, setRequirements] = useState(['', ''])
     const [levelTag, setLevelTag] = useState('Beginner')
     const [levelCount, setLevelCount] = useState(0)
     const [formData, setFormData] = useState({name: '', description: '', tags: ''})
 
     const containerRef = useRef(null);
+    const formRef = useRef(null);
+
+    useEffect(() => {
+      if (isOpen) {
+        setIsMounted(true)
+        const timer = setTimeout(() => setIsVisible(true), 10)
+        return () => clearTimeout(timer)
+      } else {
+        setIsVisible(false)
+      }
+    }, [isOpen])
+
+    const handleClose = () => {
+        setIsVisible(false)
+        setIsOpen(false)
+    }
+
+    const handleBackdropClick = (e) => {
+        if (e.target === e.currentTarget) {
+            handleClose()
+        }
+    }
+
+    const handleTransitionEnd = () => {
+        if (!isVisible) setIsMounted(false)
+    }
 
     useEffect(() => {
         if (containerRef.current) {
@@ -45,9 +73,23 @@ const AddProject = () => {
       console.log(formData.name, formData.description, requirements, tagsList);
     }
 
+    if (!isMounted) return null;
+
   return (
-    <div className='absolute w-full h-[85svh] flex items-center z-30 justify-between'>
-      <form onSubmit={handleSubmit} className='mx-auto bg-white p-4 rounded-md flex flex-col gap-2 text-sm w-82 border md:text-base md:w-120 md:p-6 md:gap-3'>
+    <div 
+      onClick={handleBackdropClick}
+      className={`fixed inset-0 h-svh flex items-center justify-between z-30 transition-opacity duration-100 ${
+        isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+      }`}
+    >
+      <form
+        // ref={formRef}
+        onSubmit={handleSubmit}
+        onTransitionEnd={handleTransitionEnd}
+        className={`mx-auto bg-white p-4 rounded-md flex flex-col gap-2 text-sm w-82 border md:text-base md:w-120 md:p-6 md:gap-3 transition-all duration-100 ease-out origin-center ${
+          isVisible ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+        }`}
+      >
       <h2 className='text-2xl font-bold ml-2'>Add New Project</h2>
         <div className='flex justify-between items-center  border border-gray-300 rounded-md'>
           <button type='button' onClick={() => setLevelCount(levelCount>=1?levelCount-1:levelCount)} className='border-r border-gray-300 cursor-pointer hover:bg-gray-100 p-2'><RiArrowLeftSLine className='w-4 h-4 md:w-5.5 md:h-5.5' /></button>
