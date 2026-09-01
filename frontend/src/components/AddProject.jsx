@@ -1,7 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
 import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
+import { createProject } from '../api'
+import { AuthContext } from '../contexts/AuthContext'
 
-const AddProject = ({ isOpen = true, setIsOpen }) => {
+const AddProject = ({ isOpen = true, setIsOpen, projects, setProjects }) => {
     const [isMounted, setIsMounted] = useState(isOpen)
     const [isVisible, setIsVisible] = useState(false)
     const [requirements, setRequirements] = useState(['', ''])
@@ -10,7 +12,7 @@ const AddProject = ({ isOpen = true, setIsOpen }) => {
     const [formData, setFormData] = useState({name: '', description: '', tags: ''})
 
     const containerRef = useRef(null);
-    const formRef = useRef(null);
+    const { token } = useContext(AuthContext)
 
     useEffect(() => {
       if (isOpen) {
@@ -63,14 +65,19 @@ const AddProject = ({ isOpen = true, setIsOpen }) => {
       setFormData({...formData, [e.target.name]: e.target.value})
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault()
       const tagsList = []
       if (formData.tags.length != 0) {
         for (const item of formData.tags.split(', ')) {tagsList.push(item)}
       }
       tagsList.unshift(levelTag, 'Future')
-      console.log(formData.name, formData.description, requirements, tagsList);
+
+      if (token) {
+        const newProject = await createProject(formData.name, formData.description, requirements, tagsList, token);
+        setProjects([...projects, newProject])
+        handleClose()
+      }
     }
 
     if (!isMounted) return null;

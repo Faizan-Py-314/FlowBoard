@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const BASE_URL = "http://192.168.100.31:8000";
-// BASE_URL = 'http://0.0.0.0:8000'
+// const BASE_URL = "http://192.168.100.31:8000";
+const BASE_URL = 'http://0.0.0.0:8000'
 
 const loginUser = async (credentials) => {
     try{
@@ -55,4 +55,16 @@ const fetchProjectsData = async (token) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo, fetchProjectsData}
+const createProject = async (name, description, requirements, tags, token) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/api/projects`, 
+            {name, description, requirements, tags},
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('Create Project error', error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject}
