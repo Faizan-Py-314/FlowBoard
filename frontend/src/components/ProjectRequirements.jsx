@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import { RiAddLine } from '@remixicon/react'
 import { ProjectContext } from '../contexts/ProjectContext'
+import { RiAddLine, RiDeleteBin6Line } from '@remixicon/react'
 
 const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
   const [isMounted, setIsMounted] = useState(isOpen)
@@ -34,6 +34,16 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
     if (!isVisible) setIsMounted(false)
   }
 
+  const requirementsDetails = {
+    python: ['python.png', 'https://www.python.org/'],
+    javascript: ['javascript.png', 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'],
+    fastapi: ['fastapi.png', 'https://fastapi.tiangolo.com/'],
+    react: ['react.png', 'https://react.dev/'],
+    tailwind: ['tailwind.png', 'https://tailwindcss.com/'],
+    remixicons: ['remixicon.png', 'https://remixicon.com/'],
+    no_image: ['no_image.png', '/'],
+  }
+
   if (!isMounted) return null;
 
 
@@ -43,16 +53,21 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
         <h2 className='text-xl font-bold'>Requirements for this Project</h2>
         <hr className='mb-1 mx-1 text-gray-300' />
         <div className='flex flex-col gap-2 h-[48svh] pb-2 mb-10 overflow-auto no_scrollbar'>
-          {project.requirements.map((requirement, index) => {
-          return <div key={index} className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/python.png" alt="Python png" />
+          {(project?.requirements || []).map((requirement, index) => {
+            const lowerCaseRequirement = requirement.toLowerCase()
+            const keys = Object.keys(requirementsDetails)
+          return <div key={index} className='group py-2 px-3 flex items-center justify-between w-full border border-gray-300 rounded-md hover:bg-gray-100'>
+            <div className='flex items-center gap-2 cursor-pointer'>
+            <img className='w-5' src={`requirements/${keys.includes(lowerCaseRequirement)? requirementsDetails[lowerCaseRequirement][0]:requirementsDetails['no_image'][0]}`} alt="Python png" />
             <span>{requirement}</span>
+          </div>
+          <RiDeleteBin6Line className='cursor-pointer lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-red-400 w-4 h-5 md:w-5 md:h-6' />
           </div>
           })}
         </div>
-        <div className='absolute bottom-3 w-[90%]'>
-          <button onClick={() => setAddNewReq(true)} className={`${addNewReq ? 'hidden' : 'block'} cursor-pointer bg-black text-white p-2 w-full rounded-md`}>Add New Requirment</button>
-          <div className={`w-full p-2 border border-gray-300 rounded-md items-center md:px-2.5 ${addNewReq ? 'flex' : 'hidden'}`}>
+        <div className='absolute bottom-3 grid grid-cols-1 grid-rows-1 w-[90%]'>
+          <button onClick={() => setAddNewReq(true)} className={`${addNewReq ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100 pointer-events-auto'} col-start-1 row-start-1 cursor-pointer bg-black text-white p-2 w-full rounded-md transition-all duration-300 ease-in-out`}>Add New Requirment</button>
+          <div className={`col-start-1 row-start-1 flex w-full p-2 border border-gray-300 rounded-md items-center md:px-2.5 transition-all duration-300 ease-in-out ${addNewReq ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}>
             <input className='w-full text-xs focus:outline-none md:text-sm' type="text" name="requirment" placeholder='New Requirement' />
             <button onClick={() => setAddNewReq(false)} className='cursor-pointer bg-black text-white p-1 rounded-sm'><RiAddLine className='w-3 h-3 md:w-4 md:h-4' /></button>
           </div>
