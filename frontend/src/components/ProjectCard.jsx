@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, setIsOpen }) => {
 
     const formatTimeAgo = (isoDateString) => {
         if (!isoDateString) return '';
@@ -65,7 +65,7 @@ const ProjectCard = ({ project }) => {
                 
             </div>
             <hr className='text-gray-200' />
-            <span className='text-sm text-gray-600 cursor-pointer hover:underline w-fit'>Details and Requirements</span>
+            <span onClick={() => setIsOpen(true)} className='text-sm text-gray-600 cursor-pointer hover:underline w-fit'>Details and Requirements</span>
             <div className='flex gap-2 items-center mt-2'>
                 <button className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>View Details</button>
                 <button className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>Add Details</button>
