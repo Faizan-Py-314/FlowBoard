@@ -1,36 +1,23 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import Search from '../components/Search'
 import ProjectCard from '../components/ProjectCard'
-import { fetchProjectsData } from '../api'
-import { AuthContext } from '../contexts/AuthContext'
+import { ProjectContext } from '../contexts/ProjectContext'
 import { RiAddLine } from '@remixicon/react'
 import AddProject from '../components/AddProject'
 import ProjectRequirements from '../components/ProjectRequirements'
 
 const ProjectsPage = () => {
-  const [projects, setProjects] = useState([])
   const [addProjectisOpen, setAddProjectisOpen] = useState(false)
   const [requirmentIsOpen, setRequirmentIsOpen] = useState(false)
 
-  const { token } = useContext(AuthContext)
+  const { projects } = useContext(ProjectContext)
 
-  useEffect(() => {
-    const projectData = async () => {
-      try {
-        const data = await fetchProjectsData(token)
-        setProjects(data)
-      } catch (error) {
-        console.error("Failed to fetch projects:", error)
-      }
-    }
-    if (token) {projectData()}
-  }, [token]);
-  
+  if (!projects) return null;
   
   return (
     <>
       <div className='w-full relative'>
-        <AddProject isOpen={addProjectisOpen} setIsOpen={setAddProjectisOpen} projects={projects} setProjects={setProjects} />
+        <AddProject isOpen={addProjectisOpen} setIsOpen={setAddProjectisOpen} />
         <ProjectRequirements isOpen={requirmentIsOpen} setIsOpen={setRequirmentIsOpen} />
         <div className='w-full relative px-5'>
           <Search/>
