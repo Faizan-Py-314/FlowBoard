@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { RiAddLine } from '@remixicon/react'
+import { ProjectContext } from '../contexts/ProjectContext'
 
 const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
   const [isMounted, setIsMounted] = useState(isOpen)
   const [isVisible, setIsVisible] = useState(false)
   const [addNewReq, setAddNewReq] = useState(false)
+
+  const { project } = useContext(ProjectContext)
 
   useEffect(() => {
     if (isOpen) {
@@ -40,42 +43,12 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
         <h2 className='text-xl font-bold'>Requirements for this Project</h2>
         <hr className='mb-1 mx-1 text-gray-300' />
         <div className='flex flex-col gap-2 h-[48svh] pb-2 mb-10 overflow-auto no_scrollbar'>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
+          {project.requirements.map((requirement, index) => {
+          return <div key={index} className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
             <img className='w-5' src="requirements/python.png" alt="Python png" />
-            <span>Python</span>
+            <span>{requirement}</span>
           </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/fastapi.png" alt="Python png" />
-            <span>FastAPI</span>
-          </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/javascript.png" alt="Python png" />
-            <span>JavaScript</span>
-          </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/react.png" alt="Python png" />
-            <span>React</span>
-          </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/tailwind.png" alt="Python png" />
-            <span>Tailwind</span>
-          </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/remixicon.png" alt="Python png" />
-            <span>Remix Icons</span>
-          </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/remixicon.png" alt="Python png" />
-            <span>Remix Icons</span>
-          </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/remixicon.png" alt="Python png" />
-            <span>Remix Icons</span>
-          </div>
-          <div className='p-2 w-full flex items-center border border-gray-300 rounded-md gap-2'>
-            <img className='w-5' src="requirements/remixicon.png" alt="Python png" />
-            <span>Remix Icons</span>
-          </div>
+          })}
         </div>
         <div className='absolute bottom-3 w-[90%]'>
           <button onClick={() => setAddNewReq(true)} className={`${addNewReq ? 'hidden' : 'block'} cursor-pointer bg-black text-white p-2 w-full rounded-md`}>Add New Requirment</button>

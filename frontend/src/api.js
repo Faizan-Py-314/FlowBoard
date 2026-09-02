@@ -67,4 +67,15 @@ const createProject = async (name, description, requirements, tags, token) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject}
+const fetchProject = async (id, token) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/projects/${id}`,
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error("Fetch Project error by id", error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject}
