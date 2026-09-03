@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { fetchProjectsData, createProject, fetchProject } from '../api'
+import { fetchProjectsData, createProject, fetchProject, updateProjectData } from '../api'
 import { AuthContext } from './AuthContext'
 
 const ProjectContext = createContext({})
@@ -47,9 +47,22 @@ const ProjectProvider = ({ children }) => {
         } catch (error) {console.error("Fetch projct error by id", error)}
     }
 
+    const updateProject = async (id, updatedData) => {
+        try{
+            if (token) {
+                const updatedProject = await updateProjectData(token, id, updatedData)
+                setProjects(prevProjects => 
+                    prevProjects.map(proj => (proj.id === id || proj._id === id ? updatedProject : proj))
+                )
+                setProject(updatedProject)
+                return updatedProject
+            }
+        } catch (error) {console.error('Project Update Error', error)}
+    }
+
 
   return (
-    <ProjectContext.Provider value={{projects, addProject, getProject, project}}>
+    <ProjectContext.Provider value={{projects, addProject, getProject, project, updateProject}}>
         {children}
     </ProjectContext.Provider>
   )

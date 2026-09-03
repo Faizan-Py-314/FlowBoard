@@ -30,3 +30,9 @@ class ProjectResponse(Project):
     last_change: datetime
     created_at: datetime
 
+class ProjectUpdate(BaseModel):
+    name: str | None = Field(default=None, min_length=1)
+    description: str | None = Field(default=None, min_length=1)
+    requirements: List[str] | None = Field(default=None)
+    tags: List[str] | None = Field(default=None)
+

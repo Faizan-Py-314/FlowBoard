@@ -6,8 +6,9 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
   const [isMounted, setIsMounted] = useState(isOpen)
   const [isVisible, setIsVisible] = useState(false)
   const [addNewReq, setAddNewReq] = useState(false)
+  const [newData, setNewData] = useState({requirements: ''})
 
-  const { project } = useContext(ProjectContext)
+  const { project, updateProject  } = useContext(ProjectContext)
 
   useEffect(() => {
     if (isOpen) {
@@ -34,6 +35,25 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
     if (!isVisible) setIsMounted(false)
   }
 
+  const handleChange = (e) => {
+      setNewData({...newData, [e.target.name]: e.target.value})
+    }
+
+  const handleUpdate = () => {
+    const currentRequirements = project.requirements || [];
+    const updatedRequirements = [...currentRequirements, newData.requirements];
+    updateProject(project.id, { requirements: updatedRequirements });
+    setNewData({requirements: ''})
+  }
+
+  const DeleteRequirement = (indexToDelete) => {
+    if (!project.requirements) return;
+    const updatedRequirements = project.requirements.filter(
+        (_, index) => index !== indexToDelete
+    );
+    updateProject(project.id, { requirements: updatedRequirements })
+  };
+
   const requirementsDetails = {
     python: ['python.png', 'https://www.python.org/'],
     javascript: ['javascript.png', 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'],
@@ -56,20 +76,20 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
           {(project?.requirements || []).map((requirement, index) => {
             const lowerCaseRequirement = requirement.toLowerCase()
             const keys = Object.keys(requirementsDetails)
-          return <div key={index} className='group py-2 px-3 flex items-center justify-between w-full border border-gray-300 rounded-md hover:bg-gray-100'>
-            <div className='flex items-center gap-2 cursor-pointer'>
+          return <div key={`${requirement}-${index}`} className='group py-2 px-3 flex items-center justify-between w-full border border-gray-300 rounded-md hover:bg-gray-100'>
+            <a href={`${keys.includes(lowerCaseRequirement)? requirementsDetails[lowerCaseRequirement][1]: `https://google.com/search?q=${lowerCaseRequirement}`}`} target="_blank" className='flex items-center gap-2 cursor-pointer'>
             <img className='w-5' src={`requirements/${keys.includes(lowerCaseRequirement)? requirementsDetails[lowerCaseRequirement][0]:requirementsDetails['no_image'][0]}`} alt="Python png" />
             <span>{requirement}</span>
-          </div>
-          <RiDeleteBin6Line className='cursor-pointer lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-red-400 w-4 h-5 md:w-5 md:h-6' />
+          </a>
+          <RiDeleteBin6Line onClick={() => DeleteRequirement(index)} className='cursor-pointer lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-red-400 w-4 h-5 md:w-5 md:h-6' />
           </div>
           })}
         </div>
         <div className='absolute bottom-3 grid grid-cols-1 grid-rows-1 w-[90%]'>
           <button onClick={() => setAddNewReq(true)} className={`${addNewReq ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100 pointer-events-auto'} col-start-1 row-start-1 cursor-pointer bg-black text-white p-2 w-full rounded-md transition-all duration-300 ease-in-out`}>Add New Requirment</button>
           <div className={`col-start-1 row-start-1 flex w-full p-2 border border-gray-300 rounded-md items-center md:px-2.5 transition-all duration-300 ease-in-out ${addNewReq ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}>
-            <input className='w-full text-xs focus:outline-none md:text-sm' type="text" name="requirment" placeholder='New Requirement' />
-            <button onClick={() => setAddNewReq(false)} className='cursor-pointer bg-black text-white p-1 rounded-sm'><RiAddLine className='w-3 h-3 md:w-4 md:h-4' /></button>
+            <input onChange={handleChange} value={newData.requirements} className='w-full text-xs focus:outline-none md:text-sm' type="text" name="requirements" placeholder='New Requirement' />
+            <button onClick={() => {setAddNewReq(false); handleUpdate()}} className='cursor-pointer bg-black text-white p-1 rounded-sm'><RiAddLine className='w-3 h-3 md:w-4 md:h-4' /></button>
           </div>
         </div>
       </div>

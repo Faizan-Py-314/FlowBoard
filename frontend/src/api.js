@@ -78,4 +78,15 @@ const fetchProject = async (id, token) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject}
+const updateProjectData = async (token, id, updatedData) => {
+    try{
+        const response = await axios.patch(`${BASE_URL}/api/projects/${id}`, updatedData, 
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('Failed Project update', error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData}
