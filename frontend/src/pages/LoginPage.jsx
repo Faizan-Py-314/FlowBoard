@@ -30,11 +30,11 @@ const LoginPage = () => {
             <div className='mt-3 w-full flex flex-col gap-2 md:gap-3 md:mt-5'>
               <div className='flex items-center gap-2 border border-gray-300 rounded-md p-2 w-full'>
                 <RiMailFill color='gray' size={20} />
-                <input onChange={handleChange} name='username' value={formData.username} className='w-full text-sm focus:outline-none md:text-base' type="email" placeholder='useremail@example.com' />
+                <input onChange={handleChange} required name='username' value={formData.username} className='w-full text-sm focus:outline-none md:text-base' type="email" placeholder='useremail@example.com' />
               </div>
               <div className='flex items-center gap-2 border border-gray-300 rounded-md p-2 w-full'>
                 <RiDoorLockBoxFill color='gray' size={20} />
-                <input onChange={handleChange} name='password' value={formData.password} className='w-full text-sm focus:outline-none md:text-base' type={passwordVisible?'text':"password"} placeholder='**************' />
+                <input onChange={handleChange} required name='password' value={formData.password} className='w-full text-sm focus:outline-none md:text-base' type={passwordVisible?'text':"password"} placeholder='**************' />
                 <span onClick={() => setPasswordVisible(!passwordVisible)} className={`${formData.password == ''? 'hidden':'block'} cursor-pointer`} > {passwordVisible? <RiEyeLine size={20} color='gray' />:<RiEyeCloseLine size={20} color='gray' />}</span>
               </div>
             </div>

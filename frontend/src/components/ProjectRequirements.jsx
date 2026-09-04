@@ -7,7 +7,6 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [addNewReq, setAddNewReq] = useState(false)
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
-  const [isHidden, setIsHidden] = useState(false)
   const [newData, setNewData] = useState({requirements: ''})
 
   const { project, updateProject  } = useContext(ProjectContext)
@@ -24,7 +23,8 @@ const ProjectRequirements = ({ isOpen = true, setIsOpen }) => {
 
   const handleClose = () => {
     setIsVisible(false)
-    setIsOpen(false)
+    const timer2 = setTimeout(() => setIsOpen(false), 30)
+    return () => clearTimeout(timer2)
   }
 
   const handleBackdropClick = (e) => {
