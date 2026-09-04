@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { ProjectContext } from '../contexts/ProjectContext'
 
-const ProjectCard = ({ project, setIsOpen }) => {
+const ProjectCard = ({ project, setRequirmentIsOpen, setAddProjectisOpen, setIsEditMode }) => {
     const { getProject } = useContext(ProjectContext)
 
     const formatTimeAgo = (isoDateString) => {
@@ -67,10 +67,10 @@ const ProjectCard = ({ project, setIsOpen }) => {
                 
             </div>
             <hr className='text-gray-200' />
-            <span onClick={() => {getProject(project.id); setIsOpen(true)}} className='text-sm text-gray-600 cursor-pointer hover:underline w-fit'>Details and Requirements</span>
+            <span onClick={() => {getProject(project.id); setRequirmentIsOpen(true)}} className='text-sm text-gray-600 cursor-pointer hover:underline w-fit'>Details and Requirements</span>
             <div className='flex gap-2 items-center mt-2'>
-                <button className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>View Details</button>
-                <button className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>Add Details</button>
+                <button className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>View Tasks</button>
+                <button onClick={async () => {setIsEditMode(true); await getProject(project.id); setAddProjectisOpen(true); }} className='py-2 px-3 bg-black text-white rounded-md text-sm cursor-pointer'>Edit Details</button>
             </div>
         </div>
     </div>

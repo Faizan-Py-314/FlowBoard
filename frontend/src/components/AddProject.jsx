@@ -2,16 +2,24 @@ import { useState, useRef, useEffect, useContext } from 'react'
 import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
 import { ProjectContext } from '../contexts/ProjectContext'
 
-const AddProject = ({ isOpen = true, setIsOpen}) => {
+const AddProject = ({ isOpen = true, setIsOpen, isEditMode, setIsEditMode}) => {
+    const { addProject, project, updateProject } = useContext(ProjectContext)
+
+    if (isEditMode && !project) {
+      return <div className="modal">Loading details...</div>;
+    }
     const [isMounted, setIsMounted] = useState(isOpen)
     const [isVisible, setIsVisible] = useState(false)
-    const [requirements, setRequirements] = useState(['', ''])
+    const [requirements, setRequirements] = useState(isEditMode? project.requirements:['', ''])
     const [levelTag, setLevelTag] = useState('Beginner')
     const [levelCount, setLevelCount] = useState(0)
-    const [formData, setFormData] = useState({name: '', description: '', tags: ''})
+    const [formData, setFormData] = useState({
+      name: `${isEditMode? project.name:''}`, 
+      description: `${isEditMode? project.description:''}`, 
+      tags: `${isEditMode?project.tags.slice(2).join(', ') :''}`
+    })
 
     const containerRef = useRef(null);
-    const { addProject } = useContext(ProjectContext)
 
     useEffect(() => {
       if (isOpen) {
@@ -25,7 +33,8 @@ const AddProject = ({ isOpen = true, setIsOpen}) => {
 
     const handleClose = () => {
         setIsVisible(false)
-        setIsOpen(false)
+        const timer2 = setTimeout(() => {setIsOpen(false); setIsEditMode(false)}, 30)
+        return () => clearTimeout(timer2)
     }
 
     const handleBackdropClick = (e) => {
@@ -50,6 +59,14 @@ const AddProject = ({ isOpen = true, setIsOpen}) => {
     const levels = ['Beginner', 'Intermediate', 'Advanced']
 
     useEffect(() => {
+      if (isEditMode) {
+        if (project.tags[0] == 'Beginner') {setLevelCount(0)}
+        else if (project.tags[0] == 'Intermediate') {setLevelCount(1)}
+        else {setLevelCount(2)}
+      }
+    }, [])
+    
+    useEffect(() => {
       setLevelTag(levels[levelCount])
     }, [levelCount])
 
@@ -70,13 +87,23 @@ const AddProject = ({ isOpen = true, setIsOpen}) => {
       handleClose()
     }
 
+    const updateProjectInfo = () => {
+      const tagsList = []
+      if (formData.tags.length != 0) {
+          for (const item of formData.tags.split(',')) {tagsList.push(item)}
+      }
+        tagsList.unshift(levelTag, project.tags[2])
+      updateProject(project.id, {name: formData.name, description:formData.description, requirements:requirements, tags:tagsList})
+      handleClose()
+    }
+
     if (!isMounted) return null;
 
   return (
     <div 
       onClick={handleBackdropClick} className={`fixed inset-0 h-svh flex items-center justify-between z-30 transition-opacity duration-150 ${isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
       <form onSubmit={handleSubmit} onTransitionEnd={handleTransitionEnd} className={`mx-auto bg-white p-4 rounded-md flex flex-col gap-2 text-sm w-82 border md:text-base md:w-120 md:p-6 md:gap-3 transition-all duration-150 ease-out origin-center ${isVisible ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'}`}>
-      <h2 className='text-2xl font-bold ml-2'>Add New Project</h2>
+      <h2 className='text-2xl font-bold ml-2'>{isEditMode? 'Edit Project Details':'Add New Project'}</h2>
         <div className='flex justify-between items-center  border border-gray-300 rounded-md'>
           <button type='button' onClick={() => setLevelCount(levelCount>=1?levelCount-1:levelCount)} className='border-r border-gray-300 cursor-pointer hover:bg-gray-100 p-2'><RiArrowLeftSLine className='w-4 h-4 md:w-5.5 md:h-5.5' /></button>
           <input className='w-fit text-center caret-transparent focus:outline-none' type='text' value={levelTag} readOnly />
@@ -96,7 +123,7 @@ const AddProject = ({ isOpen = true, setIsOpen}) => {
 
         </div>
         <input onChange={handleChange} className=' focus:outline-none border border-gray-300 py-2 px-3 w-full rounded-md' type="text" name='tags' value={formData.tags} placeholder='Tag1, Tag2, Tag3...' />
-        <button type='submit' className='w-full p-2 bg-black text-white rounded-md cursor-pointer'>Create Project</button>
+        <button onClick={() => {isEditMode? updateProjectInfo():handleSubmit()}} type={isEditMode? 'button':'submit'} className='w-full p-2 bg-black text-white rounded-md cursor-pointer'>{isEditMode? 'Update Project':'Create Project'}</button>
       </form>
     </div>
   )
