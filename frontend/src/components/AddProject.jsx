@@ -109,8 +109,7 @@ const AddProject = ({ isOpen = true, setIsOpen, isEditMode, setIsEditMode}) => {
     if (!isMounted) return null;
 
   return (
-    <div 
-      onClick={handleBackdropClick} className={`fixed inset-0 h-svh flex items-center justify-between z-30 transition-opacity duration-150 ${isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+    <div onClick={handleBackdropClick} className={`fixed inset-0 h-svh flex items-center justify-between z-30 transition-opacity duration-150 ${isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
       <form onSubmit={isEditMode? updateProjectInfo:handleSubmit} onTransitionEnd={handleTransitionEnd} className={`mx-auto bg-white p-4 rounded-md flex flex-col gap-2 text-sm w-82 border md:text-base md:w-120 md:p-6 md:gap-3 transition-all duration-150 ease-out origin-center ${isVisible ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'}`}>
       <h2 className='text-2xl font-bold ml-2'>{isEditMode? 'Edit Project Details':'Add New Project'}</h2>
         <div className='flex justify-between items-center  border border-gray-300 rounded-md'>

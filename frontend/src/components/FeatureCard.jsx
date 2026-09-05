@@ -1,8 +1,11 @@
-import React from 'react'
-import { RiSettings3Line, RiListCheck2, RiListCheck3, RiFileTextLine, RiCalendarTodoFill, RiListCheck } from '@remixicon/react'
+import { useState } from 'react'
+import { RiSettings3Line, RiListCheck2, RiListCheck3, RiFileTextLine, RiListCheck } from '@remixicon/react'
 import CircularProgressBar from './CircularProgressBar'
 
 const FeatureCard = () => {
+    const [isTasksOpen, setIsTasksOpen] = useState(false)
+    const [isSubTasksOpen, setIsSubTasksOpen] = useState(false)
+
     return (
         <div>
             <div className='border border-gray-300 p-2 rounded-md md:p-2.5'>
@@ -10,7 +13,7 @@ const FeatureCard = () => {
                     <span className='font-bold'>Create Dropdown</span>
                     <div className='flex items-center gap-2 mr-1 -md:mt-1'>
                         <RiFileTextLine className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
-                        <RiListCheck3 className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
+                        <RiListCheck3 onClick={() => {setIsTasksOpen(!isTasksOpen); setIsSubTasksOpen(false)}} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
                     </div>
                 </div>
                 <span className='text-xs md:text-sm'>Total Task: 8, Completed: 4</span>
@@ -24,7 +27,7 @@ const FeatureCard = () => {
                     </div>
                 </div>
 
-                <div className='my-2 md:mt-3'>
+                <div className={`${isTasksOpen?'block':'hidden'} my-2 md:mt-3`}>
                     <hr className='text-gray-300 my-2 mx-2' />
                     <h3 className='font-bold'>Tasks</h3>
                     <div>
@@ -36,11 +39,11 @@ const FeatureCard = () => {
                                 </div>
                                 <div className='flex items-center gap-1 md:gap-2'>
                                     <RiFileTextLine className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
-                                    <RiListCheck className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
+                                    <RiListCheck onClick={() => setIsSubTasksOpen(!isSubTasksOpen)} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
                                 </div>
                             </div>
 
-                            <div>
+                            <div className={`${isSubTasksOpen?'block':'hidden'}`}>
                                 <hr className='my-2 mx-2 text-gray-300' />
                                 <h3 className='font-bold text-sm'>SubTasks</h3>
                                 <div className='flex flex-col gap-2 my-1'>
