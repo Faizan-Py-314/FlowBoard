@@ -15,11 +15,9 @@ const CircularProgressBar = ({
   const strokeDashoffset = circumference - progressRatio * circumference;
 
   return (
-    <div className="inline-flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {/* Left-side Text Label */}
-      <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
-        {testCompleted} of {TotalTasks}
-      </span>
+      
 
       {/* Right-side SVG Circular Ring */}
       <div
