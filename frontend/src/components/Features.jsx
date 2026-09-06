@@ -43,7 +43,7 @@ const Features = ({ isOpen = true, setIsOpen }) => {
                     <button className='py-2 px-3 text-xs cursor-pointer rounded-md bg-black text-white md:text-sm'>Add Feature</button>
                 </div>
                 <hr className='text-gray-300' />
-                <div className='flex flex-col gap-2 md:gap-3 h-142 overflow-auto no_scrollbar'>
+                <div className='flex flex-col gap-2 md:gap-3 h-121 md:h-145 overflow-auto no_scrollbar'>
                     <FeatureCard />
                     <FeatureCard />
                     <FeatureCard />
