@@ -8,7 +8,6 @@ const FeatureCard = () => {
     const [isTasksOpen, setIsTasksOpen] = useState(false)
     const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
-    const [isSubTasksOpen, setIsSubTasksOpen] = useState(false)
 
     return (
         <div>
