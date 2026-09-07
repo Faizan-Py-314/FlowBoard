@@ -3,110 +3,110 @@ import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
 import { ProjectContext } from '../contexts/ProjectContext'
 
 const AddProject = ({ isOpen = true, setIsOpen, isEditMode, setIsEditMode}) => {
-    const { addProject, project, updateProject } = useContext(ProjectContext)
+  const { addProject, project, updateProject } = useContext(ProjectContext)
 
-    if (isEditMode && !project) {
-      return <div className="modal">Loading details...</div>;
+  if (isEditMode && !project) {
+    return <div className="modal">Loading details...</div>;
+  }
+  const [isMounted, setIsMounted] = useState(isOpen)
+  const [isVisible, setIsVisible] = useState(false)
+  const [requirements, setRequirements] = useState(isEditMode? project.requirements:['', ''])
+  const [levelTag, setLevelTag] = useState('Beginner')
+  const [levelCount, setLevelCount] = useState(0)
+  const [formData, setFormData] = useState({
+    name: `${isEditMode? project.name:''}`, 
+    description: `${isEditMode? project.description:''}`, 
+    tags: `${isEditMode?project.tags.slice(2).join(', ') :''}`
+  })
+  const [isError, setIsError] = useState(null)
+
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsMounted(true)
+      const timer = setTimeout(() => setIsVisible(true), 10)
+      return () => clearTimeout(timer)
+    } else {
+      setIsVisible(false)
     }
-    const [isMounted, setIsMounted] = useState(isOpen)
-    const [isVisible, setIsVisible] = useState(false)
-    const [requirements, setRequirements] = useState(isEditMode? project.requirements:['', ''])
-    const [levelTag, setLevelTag] = useState('Beginner')
-    const [levelCount, setLevelCount] = useState(0)
-    const [formData, setFormData] = useState({
-      name: `${isEditMode? project.name:''}`, 
-      description: `${isEditMode? project.description:''}`, 
-      tags: `${isEditMode?project.tags.slice(2).join(', ') :''}`
-    })
-    const [isError, setIsError] = useState(null)
+  }, [isOpen])
 
-    const containerRef = useRef(null);
+  const handleClose = () => {
+    setIsVisible(false)
+    const timer2 = setTimeout(() => {setIsOpen(false); setIsEditMode(false)}, 30)
+    return () => clearTimeout(timer2)
+  }
 
-    useEffect(() => {
-      if (isOpen) {
-        setIsMounted(true)
-        const timer = setTimeout(() => setIsVisible(true), 10)
-        return () => clearTimeout(timer)
-      } else {
-        setIsVisible(false)
-      }
-    }, [isOpen])
-
-    const handleClose = () => {
-        setIsVisible(false)
-        const timer2 = setTimeout(() => {setIsOpen(false); setIsEditMode(false)}, 30)
-        return () => clearTimeout(timer2)
-    }
-
-    const handleBackdropClick = (e) => {
-        if (e.target === e.currentTarget) {
-            handleClose()
-        }
-    }
-
-    const handleTransitionEnd = () => {
-        if (!isVisible) setIsMounted(false)
-    }
-
-    useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.scrollTo({
-                top: containerRef.current.scrollHeight,
-                behavior: 'smooth'
-            });
-        };
-    }, [requirements])
-    
-    const levels = ['Beginner', 'Intermediate', 'Advanced']
-
-    useEffect(() => {
-      if (isEditMode) {
-        if (project.tags[0] == 'Beginner') {setLevelCount(0)}
-        else if (project.tags[0] == 'Intermediate') {setLevelCount(1)}
-        else {setLevelCount(2)}
-      }
-    }, [])
-    
-    useEffect(() => {
-      setLevelTag(levels[levelCount])
-    }, [levelCount])
-
-    const handleChangeRequirements = (e, index) => {
-      const newValue = e.target.value
-      const newRequirements = [...requirements]
-      newRequirements[index] = newValue
-      setRequirements(newRequirements)
-    }
-
-    const handleChange = (e) => {
-      setFormData({...formData, [e.target.name]: e.target.value})
-    }
-
-    const handleSubmit = (e) => {
-      e.preventDefault()
-      if (formData.name.length == 0) {setIsError('NameEmptyError'); return}
-      else if (formData.description.length == 0) {setIsError('DescriptionEmptyError'); return}
-      else setIsError(null)
-
-      addProject(formData.name, formData.description, requirements, formData.tags, levelTag)
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
       handleClose()
     }
-    
-    const updateProjectInfo = (e) => {
-      e.preventDefault()
-      if (formData.name.length == 0) {setIsError('NameEmptyError'); return}
-      else if (formData.description.length == 0) {setIsError('DescriptionEmptyError'); return}
-      else setIsError(null)
-      const tagsList = []
-      if (formData.tags.length != 0) {
-          for (const item of formData.tags.split(',')) {tagsList.push(item)}
-      }
-        tagsList.unshift(levelTag, project.tags[1])
-      updateProject(project.id, {name: formData.name, description:formData.description, requirements:requirements, tags:tagsList})
-      handleClose()
-    }
+  }
 
-    if (!isMounted) return null;
+  const handleTransitionEnd = () => {
+    if (!isVisible) setIsMounted(false)
+  }
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    };
+  }, [requirements])
+  
+  const levels = ['Beginner', 'Intermediate', 'Advanced']
+
+  useEffect(() => {
+    if (isEditMode) {
+      if (project.tags[0] == 'Beginner') {setLevelCount(0)}
+      else if (project.tags[0] == 'Intermediate') {setLevelCount(1)}
+      else {setLevelCount(2)}
+    }
+  }, [])
+  
+  useEffect(() => {
+    setLevelTag(levels[levelCount])
+  }, [levelCount])
+
+  const handleChangeRequirements = (e, index) => {
+    const newValue = e.target.value
+    const newRequirements = [...requirements]
+    newRequirements[index] = newValue
+    setRequirements(newRequirements)
+  }
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value})
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (formData.name.length == 0) {setIsError('NameEmptyError'); return}
+    else if (formData.description.length == 0) {setIsError('DescriptionEmptyError'); return}
+    else setIsError(null)
+
+    addProject(formData.name, formData.description, requirements, formData.tags, levelTag)
+    handleClose()
+  }
+  
+  const updateProjectInfo = (e) => {
+    e.preventDefault()
+    if (formData.name.length == 0) {setIsError('NameEmptyError'); return}
+    else if (formData.description.length == 0) {setIsError('DescriptionEmptyError'); return}
+    else setIsError(null)
+    const tagsList = []
+    if (formData.tags.length != 0) {
+        for (const item of formData.tags.split(',')) {tagsList.push(item)}
+    }
+      tagsList.unshift(levelTag, project.tags[1])
+    updateProject(project.id, {name: formData.name, description:formData.description, requirements:requirements, tags:tagsList})
+    handleClose()
+  }
+
+  if (!isMounted) return null;
 
   return (
     <div onClick={handleBackdropClick} className={`fixed inset-0 h-svh flex items-center justify-between z-30 transition-opacity duration-150 ${isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>

@@ -32,18 +32,6 @@ const TaskItem = () => {
                             <input className='w-3 md:w-4 cursor-pointer' type="checkbox" />
                             <span>This is Title</span>
                         </div>
-                        <div className='border border-gray-300 rounded-sm py-1 px-2 flex items-center gap-1.5 text-xs md:text-sm md:gap-2'>
-                            <input className='w-3 md:w-4 cursor-pointer' type="checkbox" />
-                            <span>This is Title</span>
-                        </div>
-                        <div className='border border-gray-300 rounded-sm py-1 px-2 flex items-center gap-1.5 text-xs md:text-sm md:gap-2'>
-                            <input className='w-3 md:w-4 cursor-pointer' type="checkbox" />
-                            <span>This is Title</span>
-                        </div>
-                        <div className='border border-gray-300 rounded-sm py-1 px-2 flex items-center gap-1.5 text-xs md:text-sm md:gap-2'>
-                            <input className='w-3 md:w-4 cursor-pointer' type="checkbox" />
-                            <span>This is Title</span>
-                        </div>
                     </div>
                 </div>
             </div>

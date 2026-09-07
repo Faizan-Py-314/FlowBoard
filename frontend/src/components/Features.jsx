@@ -18,7 +18,7 @@ const Features = ({ isOpen = true, setIsOpen }) => {
     
     const handleClose = () => {
         setIsVisible(false)
-        const timer2 = setTimeout(() => {setIsOpen(false); setIsEditMode(false)}, 30)
+        const timer2 = setTimeout(() => {setIsOpen(false)}, 30)
         return () => clearTimeout(timer2)
     }
     

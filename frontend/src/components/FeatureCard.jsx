@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { RiSettings3Line, RiListCheck2, RiListCheck3, RiFileTextLine, RiAddCircleFill } from '@remixicon/react'
+import { RiSettings3Line, RiListCheck2, RiListCheck3, RiFileTextLine, RiAddCircleFill, RiIndeterminateCircleFill } from '@remixicon/react'
 import CircularProgressBar from './CircularProgressBar'
 import TaskItem from './TaskItem'
+import AddTask from './AddTask'
 
 const FeatureCard = () => {
     const [isTasksOpen, setIsTasksOpen] = useState(false)
     const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
+    const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
     const [isSubTasksOpen, setIsSubTasksOpen] = useState(false)
 
     return (
@@ -35,12 +37,18 @@ const FeatureCard = () => {
                         <hr className='text-gray-300 mb-2 mx-2' />
                         <div className='flex justify-between mx-2 md:mb-1'>
                             <h3 className='font-bold'>Tasks</h3>
-                            <RiAddCircleFill className='w-4 h-4 cursor-pointer md:w-5 md:h-5' />
+                            {!isAddTaskOpen ?<RiAddCircleFill onClick={() => setIsAddTaskOpen(true)} className='w-4 h-4 cursor-pointer md:w-5 md:h-5' />
+                            :<RiIndeterminateCircleFill onClick={() => setIsAddTaskOpen(false)} className='w-4 h-4 cursor-pointer md:w-5 md:h-5' />}
                         </div>
-                        <div className='flex flex-col gap-2'>
-                            <TaskItem/>
-                            <TaskItem/>
-                            <TaskItem/>
+                        <div className={`grid transition-all duration-300 ease-in-out ${isAddTaskOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                            <AddTask/>
+                        </div>
+                        <div className={`grid transition-all duration-300 ease-in-out ${isAddTaskOpen ? 'grid-rows-[0fr] opacity-0':'grid-rows-[1fr] opacity-100'}`}>
+                            <div className='overflow-hidden flex flex-col gap-2'>
+                                <TaskItem/>
+                                <TaskItem/>
+                                <TaskItem/>
+                            </div>
                         </div>
                     </div>
                 </div>
