@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { createFeature, fetchAllFeatures, fetchFeature } from '../api'
 
@@ -11,14 +11,20 @@ const FeatureProvider = ({ children }) => {
     const { token } = useContext(AuthContext)
 
     const addFeature = async (data, project_id) => {
-        if (token) {
+        if (!token) {
+            throw new Error('Not authenticated')
+        }
+        try {
             const newFeature = await createFeature(token, data, project_id)
-            setFeatures([...features, newFeature])
+            setFeatures(prevFeature => [...prevFeature, newFeature])
             return newFeature
+        } catch (error) {
+            console.error('Failed to create feature', error);
+            throw error
         }
     }
 
-    const getFeatures = async (project_id) => {
+    const getFeatures = useCallback(async (project_id) => {
         try {
             const featuresResponse = await fetchAllFeatures(token, project_id)
             setFeatures(featuresResponse)
@@ -27,7 +33,7 @@ const FeatureProvider = ({ children }) => {
             console.error('Throw error while fetcing all features', error);
             throw error
         }
-    }
+    }, [token])
 
     const getFeature = async (project_id, feature_id) => {
         try {

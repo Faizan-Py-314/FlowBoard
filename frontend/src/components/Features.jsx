@@ -18,7 +18,7 @@ const Features = ({ isOpen = true, setIsOpen }) => {
 
     useEffect(() => {
         getFeatures(project.id)
-    }, [project.id])
+    }, [project.id, getFeatures])
 
     useEffect(() => {
         if (isOpen) {
@@ -50,9 +50,17 @@ const Features = ({ isOpen = true, setIsOpen }) => {
         setNewFeatureData({...newFeatureData, [e.target.name]: e.target.value})
     }
 
-    const handleSubmit = (e) => {
-        addFeature(newFeatureData, project.id)
-        setNewFeatureData({name: '', description: ''})
+    const handleSubmit = async (e) => {
+        if (!newFeatureData.name.trim() || !newFeatureData.description.trim()) {
+            alert('Name and description are required')
+            return
+        }
+        try {
+            await addFeature(newFeatureData, project.id)
+            setNewFeatureData({name: '', description: ''})
+        } catch (error) {
+            alert('Failed to create feature. Please try again')
+        }
     }
 
     if (!isMounted) return null;
@@ -76,8 +84,8 @@ const Features = ({ isOpen = true, setIsOpen }) => {
                             </div>
                         </div>
                     </div>
-                    {features.map((feature, index) => (
-                        <FeatureCard key={index} feature={feature} handleSubmit={handleSubmit} />
+                    {features.map((feature) => (
+                        <FeatureCard key={feature.id} feature={feature} handleSubmit={handleSubmit} />
                     ))}
                 </div>
             </div>

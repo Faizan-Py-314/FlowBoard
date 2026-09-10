@@ -15,10 +15,10 @@ def get_project_or_403(project_id: int, current_user: CurrentUser, db: Annotated
     project = result.scalars().first()
 
     if not project:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Project Not Found')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Access denied')
 
     if project.user_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not allow to create feature in this Project')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Access denied')
 
     return project
 
