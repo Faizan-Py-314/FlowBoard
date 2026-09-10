@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
-from routes import users, projects
+from routes import users, projects, features
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 app.include_router(users.router, prefix='/api/users', tags=['users'])
 app.include_router(projects.router, prefix='/api/projects', tags=['Projects'])
+app.include_router(features.router, prefix='/api/features', tags=['Features'])
 
 origins = [
     'http://localhost:5173',

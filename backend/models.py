@@ -51,7 +51,7 @@ class Feature(Base):
     )
 
     __table_args__ = (
-        Index('ix_feature_project_complete', 'project_id', 'isComplete')
+        Index('ix_feature_project_complete', 'project_id', 'isComplete'),
     )
 
     project: Mapped[Project] = relationship(back_populates='features')
@@ -74,7 +74,7 @@ class Task(Base):
     )
 
     __table_args__ = (
-        Index('ix_task_feature_complete', 'feature_id', 'isComplete')
+        Index('ix_task_feature_complete', 'feature_id', 'isComplete'),
     )
 
     feature: Mapped[Feature] = relationship(back_populates='tasks')
