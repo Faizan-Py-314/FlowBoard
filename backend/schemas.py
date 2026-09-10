@@ -36,3 +36,28 @@ class ProjectUpdate(BaseModel):
     requirements: List[str] | None = Field(default=None)
     tags: List[str] | None = Field(default=None)
 
+class Feature(BaseModel):
+    name: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    project_id: int
+
+class FeatureResponse(Feature):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    isComplete: bool
+
+class SubTask(BaseModel):
+    subTask: str
+    inComplete: bool
+
+class Task(BaseModel):
+    task: str = Field(min_length=1)
+    description: str | None = Field(default=None)
+    feature_id: int
+    subTasks: List[SubTask] = Field(default=list)
+
+class TaskResponse(Task):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    isComplete: bool
+
