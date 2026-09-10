@@ -40,6 +40,9 @@ class Feature(BaseModel):
     name: str = Field(min_length=1)
     description: str = Field(min_length=1)
 
+class FeatureCreate(Feature):
+    pass
+
 class FeatureResponse(Feature):
     model_config = ConfigDict(from_attributes=True)
     id: int

@@ -22,7 +22,7 @@ const FeatureProvider = ({ children }) => {
         try {
             const featuresResponse = await fetchAllFeatures(token, project_id)
             setFeatures(featuresResponse)
-            return features
+            return featuresResponse
         } catch (error) {
             console.error('Throw error while fetcing all features', error);
             throw error

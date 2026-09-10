@@ -13,12 +13,12 @@ const Features = ({ isOpen = true, setIsOpen }) => {
     const { project } = useContext(ProjectContext)
 
     if (!project) {
-        return <div className='modal'>Loding...</div>;
+        return <div className='modal'>Loading...</div>;
     }
 
     useEffect(() => {
         getFeatures(project.id)
-    }, [])
+    }, [project.id])
 
     useEffect(() => {
         if (isOpen) {
@@ -52,7 +52,7 @@ const Features = ({ isOpen = true, setIsOpen }) => {
 
     const handleSubmit = (e) => {
         addFeature(newFeatureData, project.id)
-        
+        setNewFeatureData({name: '', description: ''})
     }
 
     if (!isMounted) return null;
