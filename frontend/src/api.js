@@ -91,8 +91,8 @@ const updateProjectData = async (token, id, updatedData) => {
 
 const createFeature = async (token, featureData, project_id) => {
     try {
-        const response = axios.post(`${BASE_URL}/api/features/${project_id}`, 
-            {featureData},
+        const response = await axios.post(`${BASE_URL}/api/features/${project_id}`, 
+            featureData,
             {headers : {Authorization: `Bearer ${token}`}}
         ); return response.data
     } catch (error) {
@@ -103,9 +103,9 @@ const createFeature = async (token, featureData, project_id) => {
 
 const fetchAllFeatures = async (token, project_id) => {
     try {
-        const response = axios.get(`${BASE_URL}/features/${project_id}`, 
+        const response = await axios.get(`${BASE_URL}/api/features/${project_id}`, 
             { headers: {Authorization: `Bearer ${token}`} }
-        ); return response.data
+        ); return response.data;
     } catch (error) {
         console.error('Fetching features error', error);
         throw error
@@ -114,7 +114,7 @@ const fetchAllFeatures = async (token, project_id) => {
 
 const fetchFeature = async (token, project_id, feature_id) => {
     try {
-        const response = axios.get(`${BASE_URL}/api/features/${project_id}/${feature_id}`, 
+        const response = await axios.get(`${BASE_URL}/api/features/${project_id}/${feature_id}`, 
             {headers : {Authorization: `Bearer ${token}`}}
         ); return response.data
     } catch (error) {

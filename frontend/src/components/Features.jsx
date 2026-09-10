@@ -1,11 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import FeatureCard from './FeatureCard'
+import { FeatureContext } from '../contexts/FeatureContext'
+import { ProjectContext } from '../contexts/ProjectContext'
 
 const Features = ({ isOpen = true, setIsOpen }) => {
     const [isMounted, setIsMounted] = useState(isOpen)
     const [isVisible, setIsVisible] = useState(false)
     const [isAddFeatureOpen, setIsAddFeatureOpen] = useState(false)
-    const [newFeatureData, setNewFeatureData] = useState({feature: '', description: ''})
+    const [newFeatureData, setNewFeatureData] = useState({name: '', description: ''})
+
+    const { addFeature, getFeatures, features } = useContext(FeatureContext)
+    const { project } = useContext(ProjectContext)
+
+    if (!project) {
+        return <div className='modal'>Loding...</div>;
+    }
+
+    useEffect(() => {
+        getFeatures(project.id)
+    }, [])
 
     useEffect(() => {
         if (isOpen) {
@@ -38,8 +51,8 @@ const Features = ({ isOpen = true, setIsOpen }) => {
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(newFeatureData.feature, newFeatureData.description);
+        addFeature(newFeatureData, project.id)
+        
     }
 
     if (!isMounted) return null;
@@ -57,17 +70,15 @@ const Features = ({ isOpen = true, setIsOpen }) => {
                     <div className={`grid transition-all duration-300 ease-in-out ${isAddFeatureOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 -mt-1.5 md:-mt-3'}`} >
                         <div className='overflow-hidden'>
                             <div className='border border-gray-300 rounded-md p-2 text-xs md:text-sm flex flex-col gap-2'>
-                                <input onChange={handleChange} value={newFeatureData.feature} className='border border-gray-300 rounded-sm py-1 px-2 w-full focus:outline-none' type="text" name='feature' placeholder='Feature' />
+                                <input onChange={handleChange} value={newFeatureData.name} className='border border-gray-300 rounded-sm py-1 px-2 w-full focus:outline-none' type="text" name='name' placeholder='Feature' />
                                 <textarea onChange={handleChange} value={newFeatureData.description} rows={3} className='border border-gray-300 rounded-sm py-1 px-2 w-full focus:outline-none' type="text" name='description' placeholder='Description' ></textarea>
-                                <button onClick={() => {setIsAddFeatureOpen(false); handleSubmit()}} className='bg-black text-white py-2 rounded-sm cursor-pointer'>Create Feature</button>
+                                <button onClick={() => {handleSubmit(); setIsAddFeatureOpen(false)}} className='bg-black text-white py-2 rounded-sm cursor-pointer'>Create Feature</button>
                             </div>
                         </div>
                     </div>
-                    <FeatureCard />
-                    <FeatureCard />
-                    <FeatureCard />
-                    <FeatureCard />
-                    <FeatureCard />
+                    {features.map((feature, index) => (
+                        <FeatureCard key={index} feature={feature} handleSubmit={handleSubmit} />
+                    ))}
                 </div>
             </div>
         </div>

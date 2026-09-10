@@ -4,7 +4,7 @@ import CircularProgressBar from './CircularProgressBar'
 import TaskItem from './TaskItem'
 import AddTask from './AddTask'
 
-const FeatureCard = () => {
+const FeatureCard = ({feature}) => {
     const [isTasksOpen, setIsTasksOpen] = useState(false)
     const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
@@ -13,7 +13,7 @@ const FeatureCard = () => {
         <div>
             <div className='border border-gray-300 p-2 rounded-md md:p-2.5'>
                 <div className='flex items-center justify-between'>
-                    <span className='font-bold'>Create Dropdown</span>
+                    <span className='font-bold'>{feature.name}</span>
                     <div className='flex items-center gap-2 mr-1 -md:mt-1'>
                         <RiFileTextLine onClick={() => {setIsDescriptionOpen(!isDescriptionOpen); setIsTasksOpen(false)}} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
                         <RiListCheck3 onClick={() => { setIsTasksOpen(!isTasksOpen); setIsDescriptionOpen(false) }} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
@@ -54,7 +54,7 @@ const FeatureCard = () => {
                 <div className={`border border-gray-300 rounded-sm text-xs md:text-sm grid transition-all duration-300 ease-in-out ${isDescriptionOpen ? 'grid-rows-[1fr] opacity-100 mt-2 p-2 md:mt-3' : 'grid-rows-[0fr] opacity-0'
                     }`}>
                     <div className='overflow-hidden'>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum ducimus quasi id doloremque. Magnam vitae voluptates molestiae, distinctio veritatis, voluptatum aliquam minus culpa excepturi nam beatae velit nihil amet eum.</p>
+                        <p>{feature.description}</p>
                     </div>
                 </div>
                 

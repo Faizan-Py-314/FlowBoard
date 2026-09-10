@@ -20,8 +20,8 @@ const FeatureProvider = ({ children }) => {
 
     const getFeatures = async (project_id) => {
         try {
-            const features = await fetchAllFeatures(token, project_id)
-            setFeatures(features)
+            const featuresResponse = await fetchAllFeatures(token, project_id)
+            setFeatures(featuresResponse)
             return features
         } catch (error) {
             console.error('Throw error while fetcing all features', error);
@@ -31,9 +31,9 @@ const FeatureProvider = ({ children }) => {
 
     const getFeature = async (project_id, feature_id) => {
         try {
-            const feature = await fetchFeature(token, project_id, feature_id)
-            setFeature(feature)
-            return feature
+            const featureResponse = await fetchFeature(token, project_id, feature_id)
+            setFeature(featureResponse)
+            return featureResponse
         } catch (error) {
             console.error('Throw error while fetching featire', error);
             throw error
