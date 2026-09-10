@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const BASE_URL = "http://192.168.100.31:8000";
-// const BASE_URL = 'http://0.0.0.0:8000'
+// const BASE_URL = "http://192.168.100.31:8000";
+const BASE_URL = 'http://0.0.0.0:8000'
 
 const loginUser = async (credentials) => {
     try{
@@ -89,4 +89,38 @@ const updateProjectData = async (token, id, updatedData) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData}
+const createFeature = async (token, featureData, project_id) => {
+    try {
+        const response = axios.post(`${BASE_URL}/api/features/${project_id}`, 
+            {featureData},
+            {headers : {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('Feature Creating error', error);
+        throw error
+    }
+}
+
+const fetchAllFeatures = async (token, project_id) => {
+    try {
+        const response = axios.get(`${BASE_URL}/features/${project_id}`, 
+            { headers: {Authorization: `Bearer ${token}`} }
+        ); return response.data
+    } catch (error) {
+        console.error('Fetching features error', error);
+        throw error
+    }
+}
+
+const fetchFeature = async (token, project_id, feature_id) => {
+    try {
+        const response = axios.get(`${BASE_URL}/api/features/${project_id}/${feature_id}`, 
+            {headers : {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('Fetching single feature error', error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData, createFeature, fetchAllFeatures, fetchFeature}

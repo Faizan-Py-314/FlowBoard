@@ -39,11 +39,11 @@ class ProjectUpdate(BaseModel):
 class Feature(BaseModel):
     name: str = Field(min_length=1)
     description: str = Field(min_length=1)
-    project_id: int
 
 class FeatureResponse(Feature):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    project_id: int
     isComplete: bool
 
 class SubTask(BaseModel):
