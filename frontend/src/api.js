@@ -123,4 +123,16 @@ const fetchFeature = async (token, project_id, feature_id) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData, createFeature, fetchAllFeatures, fetchFeature}
+const updateFeature = async (token, data, project_id, feature_id) => {
+    try {
+        const respones = await axios.patch(`${BASE_URL}/api/feature/${project_id}/${feature_id}`, 
+            data,
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return respones.data
+    } catch {
+        console.error('Updating Feature Data error', error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData, createFeature, fetchAllFeatures, fetchFeature, updateFeature}

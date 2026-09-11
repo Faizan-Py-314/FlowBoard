@@ -49,6 +49,10 @@ class FeatureResponse(Feature):
     project_id: int
     isComplete: bool
 
+class FeatureUpdate(BaseModel):
+    name: str | None = Field(default=None)
+    description: str | None = Field(default=None)
+
 class SubTask(BaseModel):
     subTask: str
     inComplete: bool

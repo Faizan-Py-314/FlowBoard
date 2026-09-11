@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 import models
 from auth import CurrentUser
-from schemas import FeatureCreate, FeatureResponse
+from schemas import FeatureCreate, FeatureResponse, FeatureUpdate
 
 router = APIRouter()
 
@@ -49,6 +49,24 @@ def get_feature(feature_id: int, project: Annotated[models.Project, Depends(get_
 
     return feature
 
+
+@router.patch('/{project_id}/{feature_id}', response_model=FeatureResponse)
+def update_feature(feature_id: int, feature_data:FeatureUpdate, project: Annotated[models.Project, Depends(get_project_or_403)], db: Annotated[Session, Depends(get_db)]):
+
+    result = db.execute(select(models.Feature).where(models.Feature.id == feature_id))
+    feature = result.scalars().first()
+
+    if not feature or feature.project_id != project.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Feature Not Found')
+
+    updated_data = feature_data.model_dump(exclude_unset=True)
+    for field, value in updated_data.items():
+        setattr(feature, field, value)
+
+    db.commit()
+    db.refresh(feature)
+
+    return feature
 
 @router.get('/{project_id}', response_model=list[FeatureResponse])
 def get_all_features(project: Annotated[models.Project, Depends(get_project_or_403)]):

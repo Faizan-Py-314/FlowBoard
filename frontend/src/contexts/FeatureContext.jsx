@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import { createFeature, fetchAllFeatures, fetchFeature } from '../api'
+import { createFeature, fetchAllFeatures, fetchFeature, updateFeature } from '../api'
 
 const FeatureContext = createContext({})
 
@@ -46,8 +46,20 @@ const FeatureProvider = ({ children }) => {
         }
     }
 
+    const editFeature = async (feature_data, project_id, feature_id) => {
+        try {
+            const newFeatureData = await updateFeature(token, feature_data, project_id, feature_id)
+            setFeatures(prevFeatures => prevFeatures.map(feature => (feature.id == feature_id ? newFeatureData:feature)))
+            setFeature(newFeatureData)
+            return newFeatureData
+        } catch (error) {
+            console.error('Throw error while updating featuer data');
+            throw error
+        }
+    }
+
   return (
-    <FeatureContext.Provider value={{addFeature, getFeatures, getFeature, features, feature}}>
+    <FeatureContext.Provider value={{addFeature, getFeatures, getFeature, editFeature, features, feature}}>
         {children}
     </FeatureContext.Provider>
   )
