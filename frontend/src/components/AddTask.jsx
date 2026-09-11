@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { TaskContext } from '../contexts/TaskContext'
 
 const AddTask = () => {
   const [subTasks, setSubTasks] = useState(['', ''])
   const [formData, setFormData] = useState({task: '', description: ''})
   const containerRef = useRef(null)
+
+  const { addTask } = useContext(TaskContext)
 
   useEffect(() => {
     if (containerRef.current) {
@@ -24,12 +27,10 @@ const AddTask = () => {
     setFormData({...formData, [e.target.name]: e.target.value})
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
     const updatedSubTasks = subTasks.filter(subTask => subTask.length > 0);
     if (formData.description.length == 0) {formData.description = null}
-    
-    console.log(formData.task, formData.description, updatedSubTasks)
+    await addTask({task: formData.task, description: formData.description, subTasks:updatedSubTasks})
   }
 
   return (

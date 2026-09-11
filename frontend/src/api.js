@@ -135,4 +135,51 @@ const updateFeature = async (token, data, project_id, feature_id) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData, createFeature, fetchAllFeatures, fetchFeature, updateFeature}
+const createTask = async (token, data, project_id, feature_id) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/api/tasks/${project_id}/${feature_id}`,
+            data, 
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('Creating Task Error', error);
+        throw error
+    }
+}
+
+const fetchTask = async (token, project_id, feature_id, task_id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/tasks/${project_id}/${feature_id}/${task_id}`, 
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('geting single task error', error);
+        throw error
+    }
+}
+
+const fetchAllTasks = async (token, project_id, feature_id) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/api/tasks/${project_id}/${feature_id}`, 
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return response.data
+    } catch (error) {
+        console.error('Geting all tasks Error', error);
+        throw error
+    }
+}
+
+const updateTask = async (token, data, project_id, feature_id, task_id) => {
+    try {
+        const respones = await axios.patch(`${BASE_URL}/api/tasks/${project_id}/${feature_id}/${task_id}`, 
+            data,
+            {headers: {Authorization: `Bearer ${token}`}}
+        ); return respones.data
+    } catch (error) {
+        console.error('Updating Task error', error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData, createFeature, fetchAllFeatures, fetchFeature, updateFeature, createTask, fetchTask, fetchAllTasks, updateTask}
+
