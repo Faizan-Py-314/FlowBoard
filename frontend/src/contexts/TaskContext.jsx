@@ -57,9 +57,9 @@ const TaskProvider = ({ children }) => {
 
 
   return (
-    <TaskContext.project_id value={{addTask, getTasks, editTask, tasks, task}}>
+    <TaskContext.Provider value={{addTask, getTasks, editTask, tasks, task}}>
         { children }
-    </TaskContext.project_id>
+    </TaskContext.Provider>
   )
 }
 

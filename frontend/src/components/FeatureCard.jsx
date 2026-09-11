@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { TaskContext } from '../contexts/TaskContext'
+import { ProjectContext } from '../contexts/ProjectContext'
 import { RiSettings3Line, RiListCheck2, RiListCheck3, RiFileTextLine, RiAddCircleFill, RiIndeterminateCircleFill } from '@remixicon/react'
 import CircularProgressBar from './CircularProgressBar'
 import TaskItem from './TaskItem'
@@ -9,6 +11,16 @@ const FeatureCard = ({feature}) => {
     const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
 
+    const { tasks, getTasks } = useContext(TaskContext)
+    const { project } = useContext(ProjectContext)
+
+    if (!tasks) {
+        return <div className='modal'>Loading...</div>
+    }
+
+    console.log(tasks);
+    
+
     return (
         <div>
             <div className='border border-gray-300 p-2 rounded-md md:p-2.5'>
@@ -16,7 +28,7 @@ const FeatureCard = ({feature}) => {
                     <span className='font-bold'>{feature.name}</span>
                     <div className='flex items-center gap-2 mr-1 -md:mt-1'>
                         <RiFileTextLine onClick={() => {setIsDescriptionOpen(!isDescriptionOpen); setIsTasksOpen(false)}} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
-                        <RiListCheck3 onClick={() => { setIsTasksOpen(!isTasksOpen); setIsDescriptionOpen(false) }} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
+                        <RiListCheck3 onClick={async () => { await getTasks(project.id, feature.id); setIsTasksOpen(!isTasksOpen); setIsDescriptionOpen(false) }} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
                     </div>
                 </div>
                 <span className='text-xs md:text-sm'>Total Task: 8, Completed: 4</span>
@@ -40,13 +52,13 @@ const FeatureCard = ({feature}) => {
                             :<RiIndeterminateCircleFill onClick={() => setIsAddTaskOpen(false)} className='w-4 h-4 cursor-pointer md:w-5 md:h-5' />}
                         </div>
                         <div className={`grid transition-all duration-300 ease-in-out ${isAddTaskOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-                            <AddTask/>
+                            <AddTask feature_id={feature.id} />
                         </div>
                         <div className={`grid transition-all duration-300 ease-in-out ${isAddTaskOpen ? 'grid-rows-[0fr] opacity-0':'grid-rows-[1fr] opacity-100'}`}>
                             <div className='overflow-hidden flex flex-col gap-2'>
-                                <TaskItem/>
-                                <TaskItem/>
-                                <TaskItem/>
+                                {tasks.map((task) => (
+                                    <TaskItem key={task.id} task={task} />
+                                ))}
                             </div>
                         </div>
                     </div>

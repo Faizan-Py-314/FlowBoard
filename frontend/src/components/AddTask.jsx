@@ -1,12 +1,14 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { TaskContext } from '../contexts/TaskContext'
+import { ProjectContext } from '../contexts/ProjectContext'
 
-const AddTask = () => {
+const AddTask = ({ feature_id }) => {
   const [subTasks, setSubTasks] = useState(['', ''])
   const [formData, setFormData] = useState({task: '', description: ''})
   const containerRef = useRef(null)
 
   const { addTask } = useContext(TaskContext)
+  const { project } = useContext(ProjectContext)
 
   useEffect(() => {
     if (containerRef.current) {
@@ -30,7 +32,11 @@ const AddTask = () => {
   const handleSubmit = async (e) => {
     const updatedSubTasks = subTasks.filter(subTask => subTask.length > 0);
     if (formData.description.length == 0) {formData.description = null}
-    await addTask({task: formData.task, description: formData.description, subTasks:updatedSubTasks})
+
+    let subTaskArray = []
+    for (const subtask of updatedSubTasks) {subTaskArray.push({subTask:subtask, isComplete:false})}
+    
+    await addTask({task: formData.task, description: formData.description, subTasks:subTaskArray}, project.id, feature_id)
   }
 
   return (
