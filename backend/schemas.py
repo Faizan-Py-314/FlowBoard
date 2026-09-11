@@ -60,11 +60,19 @@ class SubTask(BaseModel):
 class Task(BaseModel):
     task: str = Field(min_length=1)
     description: str | None = Field(default=None)
-    feature_id: int
     subTasks: List[SubTask] = Field(default=list)
+
+class TaskCreate(Task):
+    pass
 
 class TaskResponse(Task):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    feature_id: int
     isComplete: bool
+
+class TaskUpdate(BaseModel):
+    task: str | None = Field(default=None)
+    description: str | None = Field(default=None)
+    subTasks: List[SubTask] | None = Field(default=None)
 
