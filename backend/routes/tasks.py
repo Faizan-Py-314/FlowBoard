@@ -24,7 +24,7 @@ def get_feature_or_403(project_id:int, feature_id:int, current_user:CurrentUser,
     feature = result.scalars().first()
 
     if not feature or feature.project_id != project.id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Feature Not Found')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Access denied')
 
     return feature
 

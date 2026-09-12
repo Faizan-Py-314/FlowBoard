@@ -30,20 +30,24 @@ const AddTask = ({ feature_id }) => {
   }
 
   const handleSubmit = async (e) => {
-    const updatedSubTasks = subTasks.filter(subTask => subTask.length > 0);
-    if (formData.description.length == 0) {formData.description = null}
-
-    let subTaskArray = []
-    for (const subtask of updatedSubTasks) {subTaskArray.push({subTask:subtask, isComplete:false})}
-    
-    await addTask({task: formData.task, description: formData.description, subTasks:subTaskArray}, project.id, feature_id)
+    try {
+      const updatedSubTasks = subTasks.filter(subTask => subTask.length > 0);
+      if (formData.description.length == 0) {formData.description = null}
+      let subTaskArray = []
+      for (const subtask of updatedSubTasks) {subTaskArray.push({subTask:subtask, isComplete:false})}
+      await addTask({task: formData.task, description: formData.description, subTasks:subTaskArray}, project.id, feature_id)
+      setFormData({task: '', description: ''})
+      setSubTasks(['', ''])
+    } catch (error) {
+      alert('Failed to add Task')
+    }
   }
 
   return (
     <div className='overflow-hidden'>
     <div className='border border-gray-300 rounded-sm p-2'>
       <div className='flex flex-col gap-2 text-xs md:text-sm'>
-        <input onChange={handleChange} className='border border-gray-300 px-2 py-1.5 md:p-2 rounded-sm focus:outline-none' type="text" name='task' value={formData.task} placeholder='Task' />
+        <input required onChange={handleChange} className='border border-gray-300 px-2 py-1.5 md:p-2 rounded-sm focus:outline-none' type="text" name='task' value={formData.task} placeholder='Task' />
         <textarea onChange={handleChange} className='border border-gray-300 px-2 py-1.5 md:p-2 rounded-sm focus:outline-none' type="text" name='description' value={formData.description} placeholder='Description (Optional)'></textarea>
         <div className='border border-gray-300 rounded-sm p-2 text-xs md:text-sm w-full flex flex-col gap-2'>
             <span className='text-xs '>SubTasks (Optional)</span>

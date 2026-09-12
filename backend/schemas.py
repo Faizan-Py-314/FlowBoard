@@ -55,7 +55,7 @@ class FeatureUpdate(BaseModel):
 
 class SubTask(BaseModel):
     subTask: str
-    inComplete: bool = Field(default=False)
+    isComplete: bool = Field(default=False)
 
 class Task(BaseModel):
     task: str = Field(min_length=1)

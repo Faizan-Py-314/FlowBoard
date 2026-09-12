@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { TaskContext } from '../contexts/TaskContext'
 import { ProjectContext } from '../contexts/ProjectContext'
 import { RiSettings3Line, RiListCheck2, RiListCheck3, RiFileTextLine, RiAddCircleFill, RiIndeterminateCircleFill } from '@remixicon/react'
@@ -10,15 +10,23 @@ const FeatureCard = ({feature}) => {
     const [isTasksOpen, setIsTasksOpen] = useState(false)
     const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
+    const [taskData, setTaskData] = useState([])
 
     const { tasks, getTasks } = useContext(TaskContext)
     const { project } = useContext(ProjectContext)
 
+    useEffect(() => {
+        const fetchTasks = async () => {
+            const data = await getTasks(project.id, feature.id);
+            setTaskData(data)
+        }
+
+        fetchTasks()
+    }, [getTasks])
+
     if (!tasks) {
         return <div className='modal'>Loading...</div>
     }
-
-    console.log(tasks);
     
 
     return (
@@ -28,7 +36,7 @@ const FeatureCard = ({feature}) => {
                     <span className='font-bold'>{feature.name}</span>
                     <div className='flex items-center gap-2 mr-1 -md:mt-1'>
                         <RiFileTextLine onClick={() => {setIsDescriptionOpen(!isDescriptionOpen); setIsTasksOpen(false)}} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
-                        <RiListCheck3 onClick={async () => { await getTasks(project.id, feature.id); setIsTasksOpen(!isTasksOpen); setIsDescriptionOpen(false) }} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
+                        <RiListCheck3 onClick={() => { setIsTasksOpen(!isTasksOpen); setIsDescriptionOpen(false) }} className='cursor-pointer w-3 h-3 md:w-4 md:h-4' />
                     </div>
                 </div>
                 <span className='text-xs md:text-sm'>Total Task: 8, Completed: 4</span>
@@ -56,7 +64,7 @@ const FeatureCard = ({feature}) => {
                         </div>
                         <div className={`grid transition-all duration-300 ease-in-out ${isAddTaskOpen ? 'grid-rows-[0fr] opacity-0':'grid-rows-[1fr] opacity-100'}`}>
                             <div className='overflow-hidden flex flex-col gap-2'>
-                                {tasks.map((task) => (
+                                {taskData.map((task) => (
                                     <TaskItem key={task.id} task={task} />
                                 ))}
                             </div>

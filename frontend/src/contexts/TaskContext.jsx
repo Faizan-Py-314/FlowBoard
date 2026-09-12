@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { createTask, fetchTask, fetchAllTasks, updateTask } from '../api'
 
@@ -22,7 +22,7 @@ const TaskProvider = ({ children }) => {
         }
     }
 
-    const getTasks = async (project_id, feature_id) => {
+    const getTasks = useCallback( async (project_id, feature_id) => {
         try {
             const tasksResponse = await fetchAllTasks(token, project_id, feature_id)
             setTasks(tasksResponse)
@@ -31,7 +31,7 @@ const TaskProvider = ({ children }) => {
             console.error('Failed to get all tasks', error);
             throw error
         }
-    }
+    }, [token])
 
     const getTask = async (project_id, feature_id, task_id) => {
         try {
@@ -47,7 +47,7 @@ const TaskProvider = ({ children }) => {
     const editTask = async (task_updated_data, project_id, feature_id, task_id) => {
         try {
             const newTaskData = await updateTask(token, task_updated_data, project_id, feature_id, task_id)
-            setTasks(prevTasks => prevTasks.map(task => (task.id == task_id ? newTaskData:task)))
+            setTasks(prevTasks => prevTasks.map(task => (task.id === task_id ? newTaskData:task)))
             return newTaskData
         } catch (error) {
             console.error('Failed to update Task', error);

@@ -125,11 +125,11 @@ const fetchFeature = async (token, project_id, feature_id) => {
 
 const updateFeature = async (token, data, project_id, feature_id) => {
     try {
-        const respones = await axios.patch(`${BASE_URL}/api/feature/${project_id}/${feature_id}`, 
+        const respones = await axios.patch(`${BASE_URL}/api/features/${project_id}/${feature_id}`, 
             data,
             {headers: {Authorization: `Bearer ${token}`}}
         ); return respones.data
-    } catch {
+    } catch (error) {
         console.error('Updating Feature Data error', error);
         throw error
     }
@@ -171,10 +171,10 @@ const fetchAllTasks = async (token, project_id, feature_id) => {
 
 const updateTask = async (token, data, project_id, feature_id, task_id) => {
     try {
-        const respones = await axios.patch(`${BASE_URL}/api/tasks/${project_id}/${feature_id}/${task_id}`, 
+        const response = await axios.patch(`${BASE_URL}/api/tasks/${project_id}/${feature_id}/${task_id}`, 
             data,
             {headers: {Authorization: `Bearer ${token}`}}
-        ); return respones.data
+        ); return response.data
     } catch (error) {
         console.error('Updating Task error', error);
         throw error
