@@ -20,16 +20,21 @@ const TaskItem = ({ task, feature_id, project_id }) => {
     }
 
     const handleAddNewSubTask = async () => {
-        const data = {subTasks: [...task.subTasks, newSubTaskData]}
-        await editTask(data, project_id, feature_id, task.id)
+        if (!newSubTaskData.subTask.trim()) return
+        try {
+            const data = {subTasks: [...task.subTasks, newSubTaskData]}
+            await editTask(data, project_id, feature_id, task.id)
+            setNewSubTaskData({subTask: ''})
+        } catch (error) {alert('Failed to add subTask. Please try again later')}
     }
 
     const handleSubTaskCheckBox = async (index) => {
-        const subTaskDataCopy = [...task.subTasks]
-        subTaskDataCopy[index].isComplete = !subTaskDataCopy[index].isComplete
-        const data = {subTasks: subTaskDataCopy}
-        console.log(data)
-        await editTask(data, project_id, feature_id, task.id)
+        try {
+            const subTaskDataCopy =  task.subTasks.map(st => ({ ...st }))
+            subTaskDataCopy[index].isComplete = !subTaskDataCopy[index].isComplete
+            const data = {subTasks: subTaskDataCopy}
+            await editTask(data, project_id, feature_id, task.id)
+        } catch (error) {alert('Failed to Check subTask. Please try again later')}
     }
 
 
