@@ -75,4 +75,5 @@ class TaskUpdate(BaseModel):
     task: str | None = Field(default=None)
     description: str | None = Field(default=None)
     subTasks: List[SubTask] | None = Field(default=None)
+    isComplete: bool | None = Field(default=None)
 

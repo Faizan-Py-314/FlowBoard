@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { createTask, fetchTask, fetchAllTasks, updateTask } from '../api'
 
@@ -25,7 +25,10 @@ const TaskProvider = ({ children }) => {
     const getTasks = useCallback( async (project_id, feature_id) => {
         try {
             const tasksResponse = await fetchAllTasks(token, project_id, feature_id)
-            setTasks(tasksResponse)
+            setTasks(prevTasks => {
+                const otherFeatureTasks = prevTasks.filter(t => t.feature_id !== feature_id)
+                return [...otherFeatureTasks, ...tasksResponse]
+            })
             return tasksResponse
         } catch (error) {
             console.error('Failed to get all tasks', error);
