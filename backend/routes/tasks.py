@@ -71,7 +71,7 @@ def update_task(task_id:int, task_data:TaskUpdate, feature: Annotated[models.Fea
 
     return task
 
-@router.delete('/{project_id}/{feature_id}/{task_id}', status_code=status.HTTP_404_NOT_FOUND)
+@router.delete('/{project_id}/{feature_id}/{task_id}')
 def delete_task(task_id: int, feature: Annotated[models.Feature, Depends(get_feature_or_403)], db:Annotated[Session, Depends(get_db)]):
     result = db.execute(select(models.Task).where(models.Task.id == task_id))
     task = result.scalars().first()
@@ -80,7 +80,9 @@ def delete_task(task_id: int, feature: Annotated[models.Feature, Depends(get_fea
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task Not Found.')
 
     db.delete(task)
-    db.commit()    
+    db.commit()
+
+    return {"message": "Task deleted successfully"} 
 
 @router.get('/{project_id}/{feature_id}', response_model=list[TaskResponse])
 def get_all_tasks(feature: Annotated[models.Feature, Depends(get_feature_or_403)]):

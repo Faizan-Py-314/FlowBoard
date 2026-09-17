@@ -61,6 +61,7 @@ const TaskProvider = ({ children }) => {
     const removeTask = async (project_id, feature_id, task_id) => {
         try {
             await deleteTask(token, project_id, feature_id, task_id)
+            setTasks(prevTasks => prevTasks.filter(t => t.id !== task_id))
             return 'success'
         } catch (error) {
             console.error('Throw error on Deleting Task');

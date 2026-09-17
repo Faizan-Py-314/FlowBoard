@@ -137,9 +137,9 @@ const updateFeature = async (token, data, project_id, feature_id) => {
 
 const deleteFeature = async (token, project_id, feature_id) => {
     try {
-        await axios.delete(`${BASE_URL}/api/features/${project_id}/${feature_id}`, 
+        const respones = await axios.delete(`${BASE_URL}/api/features/${project_id}/${feature_id}`, 
             {headers: {Authorization: `Bearer ${token}`}}
-        )
+        ); return respones
     } catch (error) {
         console.error('Deleting feature error', error);
         throw error
@@ -194,9 +194,9 @@ const updateTask = async (token, data, project_id, feature_id, task_id) => {
 
 const deleteTask = async (token, project_id, feature_id, task_id) => {
     try {
-        await axios.delete(`${BASE_URL}/api/tasks/${project_id}/${feature_id}/${task_id}`,
+        const response = await axios.delete(`${BASE_URL}/api/tasks/${project_id}/${feature_id}/${task_id}`,
             {headers: {Authorization: `Bearer ${token}`}}
-        )
+        ); return response
     } catch (error) {
         console.error('deleting task error', error);
         throw error

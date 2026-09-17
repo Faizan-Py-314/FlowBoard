@@ -61,6 +61,7 @@ const FeatureProvider = ({ children }) => {
     const removeFeature = async (project_id, feature_id) => {
         try {
             await deleteFeature(token, project_id, feature_id)
+            setFeatures(prevFeatures => prevFeatures.filter(f => f.id !== feature_id))
             return 'success'
         } catch (error) {
             console.error('Throw error on Deleting Feature', error)
