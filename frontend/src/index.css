@@ -2,19 +2,44 @@
 
 body {
   font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
+/* Root background that changes with theme */
+#root {
+  min-height: 100vh;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+html.dark #root {
+  background-color: #18181b;
+}
 
 .active{
     background: #F3F3F3;
+    color: white;
+}
+
+html.dark .active {
+    background: #3f3f46;
 }
 
 .brs{
     border-right: 1px solid #e9e9e9;
 }
 
+html.dark .brs {
+    border-right: 1px solid #52525b;
+}
+
 .bbs{
     border-bottom: 1px solid #e9e9e9;
+}
+
+html.dark .bbs {
+    border-bottom: 1px solid #52525b;
 }
 
 .no_scrollbar{

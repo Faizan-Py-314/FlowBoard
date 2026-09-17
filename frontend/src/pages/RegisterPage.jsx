@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import { RiUserAddFill, RiMailFill, RiDoorLockBoxFill, RiEyeLine, RiEyeCloseLine, RiUser6Fill } from "@remixicon/react";
+import { useTheme } from '../contexts/ThemeContext'
+import { RiUserAddFill, RiMailFill, RiDoorLockBoxFill, RiEyeLine, RiEyeCloseLine, RiUser6Fill } from "@remixicon/react"
 import { Link } from 'react-router-dom'
 
 
@@ -8,8 +9,25 @@ const RegisterPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [formData, setFormData] = useState({ name: '', username: '', email: '', password: '' })
   const [inputError, setInputError] = useState('NOError')
+  const { isDark } = useTheme()
 
   const { register } = useContext(AuthContext)
+
+  // Theme classes
+  const pageBg = isDark ? 'bg-[#1b1b1d]' : 'bg-white'
+  const cardBg = isDark ? 'bg-zinc-800' : 'bg-white'
+  const borderColor = isDark ? 'border-zinc-600' : 'border-gray-300'
+  const errorBorder = isDark ? 'border-red-500' : 'border-red-300'
+  const textPrimary = isDark ? 'text-zinc-100' : 'text-gray-900'
+  const textSecondary = isDark ? 'text-zinc-400' : 'text-gray-600'
+  const textMuted = isDark ? 'text-zinc-500' : 'text-gray-500'
+  const errorText = isDark ? 'text-red-400' : 'text-red-300'
+  const inputBg = isDark ? 'bg-zinc-700' : 'bg-white'
+  const inputText = isDark ? 'text-zinc-100' : 'text-gray-900'
+  const iconColor = isDark ? 'text-zinc-400' : 'gray'
+  const btnPrimary = isDark ? 'bg-zinc-100 text-zinc-900' : 'bg-black text-white'
+  const btnHover = isDark ? 'hover:bg-zinc-200' : 'hover:bg-gray-800'
+  const linkColor = isDark ? 'text-zinc-300' : 'underline text-gray-700'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -28,46 +46,46 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className='flex items-center justify-center h-svh'>
-        <div className='flex flex-col items-center w-80 border rounded-lg p-4 gap-3 sm:w-100 md:w-120 md:p-8'>
-          <span className='bg-gray-200 p-4 rounded-md md:my-2'><RiUserAddFill /></span>
+      <div className={`flex items-center justify-center h-svh ${pageBg}`}>
+        <div className={`flex flex-col items-center w-80 border ${borderColor} rounded-lg p-4 gap-3 sm:w-100 md:w-120 md:p-8 ${cardBg}`}>
+          <span className={`${isDark ? 'bg-zinc-700 text-zinc-300' : 'bg-gray-200'} p-4 rounded-md md:my-2`}><RiUserAddFill size={40} className={isDark ? 'text-zinc-300' : 'text-gray-600'} /></span>
           <form onSubmit={handleSubmit} className='flex flex-col items-center text-center w-full'>
-            <h2 className='font-bold text-2xl md:text-4xl'>Sign up with email</h2>
-            <p className='text-sm text-gray-400 w-65 md:text-base md:mt-2'>Enter you email and password to use our all services</p>
+            <h2 className={`font-bold text-2xl md:text-4xl ${textPrimary}`}>Sign up with email</h2>
+            <p className={`text-sm ${textSecondary} w-65 md:text-base md:mt-2`}>Enter you email and password to use our all services</p>
             <div className='mt-3 w-full flex flex-col gap-2 md:gap-3 md:mt-5'>
               <div>
-                <p className={`${inputError == 'NameLengthError' ? 'block' : 'hidden'} w-full text-start text-red-300 md:-mt-2 ml-2 text-xs md:text-sm`}>Name must be at least 3 characters long</p>
-                <div className={`flex items-center gap-2 border ${inputError == 'NameLengthError' ? 'border-red-300' : 'border-gray-300'} rounded-md p-2 w-full`}>
-                  <RiUser6Fill color='gray' size={20} />
-                  <input onChange={handleChange} name='name' value={formData.name} className='w-full text-sm focus:outline-none md:text-base' type="text" placeholder='Full Name' />
+                <p className={`${inputError == 'NameLengthError' ? 'block' : 'hidden'} w-full text-start ${errorText} md:-mt-2 ml-2 text-xs md:text-sm`}>Name must be at least 3 characters long</p>
+                <div className={`flex items-center gap-2 border ${inputError == 'NameLengthError' ? errorBorder : borderColor} rounded-md p-2 w-full ${inputBg}`}>
+                  <RiUser6Fill size={20} className={iconColor} />
+                  <input onChange={handleChange} name='name' value={formData.name} className={`w-full text-sm focus:outline-none md:text-base ${inputBg} ${inputText}`} type="text" placeholder='Full Name' />
                 </div>
               </div>
               <div>
-                <p className={`${inputError == 'UsernameLengthError' ? 'block' : 'hidden'} w-full text-start text-red-300 md:-mt-2 ml-2 text-xs md:text-sm`}>Username must be at least 5 characters long</p>
-                <div className={`flex items-center gap-2 border ${inputError == 'UsernameLengthError' ? 'border-red-300' : 'border-gray-300'} rounded-md p-2 w-full`}>
-                  <RiUser6Fill color='gray' size={20} />
-                  <input onChange={handleChange} name='username' value={formData.username} className='w-full text-sm focus:outline-none md:text-base' type="text" placeholder='Username@123' />
+                <p className={`${inputError == 'UsernameLengthError' ? 'block' : 'hidden'} w-full text-start ${errorText} md:-mt-2 ml-2 text-xs md:text-sm`}>Username must be at least 5 characters long</p>
+                <div className={`flex items-center gap-2 border ${inputError == 'UsernameLengthError' ? errorBorder : borderColor} rounded-md p-2 w-full ${inputBg}`}>
+                  <RiUser6Fill size={20} className={iconColor} />
+                  <input onChange={handleChange} name='username' value={formData.username} className={`w-full text-sm focus:outline-none md:text-base ${inputBg} ${inputText}`} type="text" placeholder='Username@123' />
                 </div>
               </div>
               <div>
-                <p className={`${inputError == 'MailEmptyError' ? 'block' : 'hidden'} w-full text-start text-red-300 md:-mt-2 ml-2 text-xs md:text-sm`}>Email must not be Empty</p>
-                <div className={`flex items-center gap-2 border ${inputError == 'MailEmptyError' ? 'border-red-300' : 'border-gray-300'} rounded-md p-2 w-full`}>
-                  <RiMailFill color='gray' size={20} />
-                  <input onChange={handleChange} name='email' value={formData.email} className='w-full text-sm focus:outline-none md:text-base' type="email" placeholder='useremail@example.com' />
+                <p className={`${inputError == 'MailEmptyError' ? 'block' : 'hidden'} w-full text-start ${errorText} md:-mt-2 ml-2 text-xs md:text-sm`}>Email must not be Empty</p>
+                <div className={`flex items-center gap-2 border ${inputError == 'MailEmptyError' ? errorBorder : borderColor} rounded-md p-2 w-full ${inputBg}`}>
+                  <RiMailFill size={20} className={iconColor} />
+                  <input onChange={handleChange} name='email' value={formData.email} className={`w-full text-sm focus:outline-none md:text-base ${inputBg} ${inputText}`} type="email" placeholder='useremail@example.com' />
                 </div>
               </div>
               <div>
-                <p className={`${inputError == 'PasswordError' ? 'block' : 'hidden'} w-full text-start text-red-300 md:-mt-2 ml-2 text-xs md:text-sm`}>Password must be at least 8 characters long</p>
-                <div className={`flex items-center gap-2 border ${inputError == 'PasswordError' ? 'border-red-300' : 'border-gray-300'} rounded-md p-2 w-full`}>
-                  <RiDoorLockBoxFill color='gray' size={20} />
-                  <input onChange={handleChange} name='password' value={formData.password} className='w-full text-sm focus:outline-none md:text-base' type={passwordVisible ? 'text' : "password"} placeholder='**************' />
-                  <span onClick={() => setPasswordVisible(!passwordVisible)} className={`${formData.password == '' ? 'hidden' : 'block'} cursor-pointer`} > {passwordVisible ? <RiEyeLine size={20} color='gray' /> : <RiEyeCloseLine size={20} color='gray' />}</span>
+                <p className={`${inputError == 'PasswordError' ? 'block' : 'hidden'} w-full text-start ${errorText} md:-mt-2 ml-2 text-xs md:text-sm`}>Password must be at least 8 characters long</p>
+                <div className={`flex items-center gap-2 border ${inputError == 'PasswordError' ? errorBorder : borderColor} rounded-md p-2 w-full ${inputBg}`}>
+                  <RiDoorLockBoxFill size={20} className={iconColor} />
+                  <input onChange={handleChange} name='password' value={formData.password} className={`w-full text-sm focus:outline-none md:text-base ${inputBg} ${inputText}`} type={passwordVisible ? 'text' : "password"} placeholder='**************' />
+                  <span onClick={() => setPasswordVisible(!passwordVisible)} className={`${formData.password == '' ? 'hidden' : 'block'} cursor-pointer ${iconColor}`} > {passwordVisible ? <RiEyeLine size={20} /> : <RiEyeCloseLine size={20} />}</span>
                 </div>
               </div>
 
             </div>
-            <button className='bg-black text-white p-2 text-center w-full rounded-md text-sm mt-2 cursor-pointer md:text-base md:mt-3'>Sign up</button>
-            <span className='text-xs mt-4 mb-2 md:text-sm md:mt-5'>Already have account <Link className='underline' to="/login">Sgin in</Link></span>
+            <button className={`${btnPrimary} ${btnHover} p-2 text-center w-full rounded-md text-sm mt-2 cursor-pointer md:text-base md:mt-3`}>Sign up</button>
+            <span className={`text-xs mt-4 mb-2 md:text-sm md:mt-5 ${textSecondary}`}>Already have account <Link to="/login" className={linkColor}>Sgin in</Link></span>
           </form>
         </div>
       </div>

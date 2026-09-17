@@ -1,12 +1,18 @@
-import React from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const CircularProgressBar = ({
   TotalTasks = 0,
   testCompleted = 0,
-  strockColor = 'text-blue-500',
+  strockColor = '',
   size = 50,
   strokeWidth = 5,
 }) => {
+  const { isDark } = useTheme()
+
+  // Theme-aware default colors
+  const trackColor = isDark ? 'stroke-zinc-700' : 'stroke-gray-200'
+  const progressColor = strockColor || 'stroke-blue-500'
+
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
@@ -16,10 +22,6 @@ const CircularProgressBar = ({
 
   return (
     <div className="flex items-center gap-2">
-      {/* Left-side Text Label */}
-      
-
-      {/* Right-side SVG Circular Ring */}
       <div
         className="relative shrink-0"
         style={{ width: size, height: size }}
@@ -31,7 +33,7 @@ const CircularProgressBar = ({
             cy={size / 2}
             r={radius}
             strokeWidth={strokeWidth}
-            className="text-gray-200 stroke-current"
+            className={`${trackColor} stroke-current`}
             fill="transparent"
           />
           {/* Progress Circle */}
@@ -43,7 +45,7 @@ const CircularProgressBar = ({
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round"
-            className={`${strockColor} stroke-current transition-all duration-500 ease-out`}
+            className={`${progressColor} transition-all duration-500 ease-out`}
             fill="transparent"
           />
         </svg>

@@ -1,8 +1,15 @@
 import React from 'react'
+import { useTheme } from '../contexts/ThemeContext'
 
 const ProgressBar = ({ completedTasks = 0, totalTasks = 0, totalSegments = 15 }) => {
+    const { isDark } = useTheme()
 
     const greenDivsCount = Math.round((completedTasks / totalTasks) * totalSegments);
+
+    // Theme classes
+    const filledColor = isDark ? 'bg-green-500' : 'bg-green-400'
+    const emptyColor = isDark ? 'bg-zinc-700' : 'bg-gray-300'
+    const textColor = isDark ? 'text-zinc-400' : 'text-gray-600'
 
   return (
     <div className="flex items-center gap-2">
@@ -15,14 +22,14 @@ const ProgressBar = ({ completedTasks = 0, totalTasks = 0, totalSegments = 15 })
               style={{ transitionDelay: `${index * 30}ms` }}
               className={`w-0.5 h-4 rounded-sm transition-all duration-300 ease-out ${
                 isFilled
-                  ? 'bg-green-400 scale-y-100 opacity-100'
-                  : 'bg-gray-300 scale-y-75 opacity-50'
+                  ? `${filledColor} scale-y-100 opacity-100`
+                  : `${emptyColor} scale-y-75 opacity-50`
               }`}
             />
           );
         })}
       </div>
-      <span className="text-sm font-medium text-gray-600">
+      <span className={`text-sm font-medium ${textColor}`}>
         {completedTasks} of {totalTasks}
       </span>
     </div>
