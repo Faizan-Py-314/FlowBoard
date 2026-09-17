@@ -5,11 +5,13 @@ import { RiSettings3Line, RiListCheck2, RiListCheck3, RiFileTextLine, RiAddCircl
 import CircularProgressBar from './CircularProgressBar'
 import TaskItem from './TaskItem'
 import AddTask from './AddTask'
+import FeatureSettings from './FeatureSettings'
 
 const FeatureCard = ({feature}) => {
     const [isTasksOpen, setIsTasksOpen] = useState(false)
     const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false)
     
     const { tasks, getTasks } = useContext(TaskContext)
     const { project } = useContext(ProjectContext)
@@ -31,6 +33,7 @@ const FeatureCard = ({feature}) => {
 
     return (
         <div>
+            {isSettingsOpen && <FeatureSettings isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} tasks={featureTasks} project_id={project.id} feature={feature} />}
             <div className='border border-gray-300 p-2 rounded-md md:p-2.5'>
                 <div className='flex items-center justify-between'>
                     <span className='font-bold'>{feature.name}</span>
@@ -43,7 +46,7 @@ const FeatureCard = ({feature}) => {
                 <span className='text-xs md:text-sm'>Total Task: {featureTasks.length}, Completed: {completedTasks}</span>
                 <div className='mt-1 flex items-end justify-between'>
                     <div className=' flex gap-2'>
-                        <span className='flex items-center text-xs md:text-sm gap-1 border py-1  px-2 border-gray-300 rounded-sm w-fit cursor-pointer'><RiSettings3Line className='w-3 h-3 -ml-1 md:w-4 md:h-4' /> Settings</span>
+                        <span onClick={() => setIsSettingsOpen(true)} className='flex items-center text-xs md:text-sm gap-1 border py-1  px-2 border-gray-300 rounded-sm w-fit cursor-pointer'><RiSettings3Line className='w-3 h-3 -ml-1 md:w-4 md:h-4' /> Settings</span>
                         <span className='py-1 px-2 rounded-sm border border-gray-300 cursor-pointer'><RiListCheck2 className='w-4 h-4 md:w-5 md:h-5' /></span>
                     </div>
                     <div className='mr-1'>
