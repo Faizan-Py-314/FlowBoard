@@ -14,8 +14,8 @@ const FeatureSettings = ({ isOpen = true, setIsOpen, tasks, project_id, feature 
     const [subTaskData, setSubTaskData] = useState({subTask:''})
     const [featureData, setFeatureData] = useState({name: '', description: ''})
 
-    const { editTask } = useContext(TaskContext)
-    const { editFeature } = useContext(FeatureContext)
+    const { editTask, removeTask } = useContext(TaskContext)
+    const { editFeature, removeFeature } = useContext(FeatureContext)
 
     const taskInputRef = useRef(null)
     const subTaskInputRef = useRef(null)
@@ -102,6 +102,11 @@ const FeatureSettings = ({ isOpen = true, setIsOpen, tasks, project_id, feature 
         } catch (error) {alert('Failed to Update Feature. Please try again later')}
     }
 
+    const handleTaskDelete = (task_id) => {
+        const conformDeleteRequest = window.confirm('Are you you want to delete this task')
+        if (conformDeleteRequest) removeTask(project_id, feature.id, task_id)
+    }
+
     if (!isMounted) return null;
 
     return (
@@ -127,7 +132,7 @@ const FeatureSettings = ({ isOpen = true, setIsOpen, tasks, project_id, feature 
                                 <span onClick={() => { setIsSubTasksOpen(isSubTasksOpen == `task_${task.id}` || task.subTasks.length <= 0 ? null : `task_${task.id}`) }} className={`${taskInEdit == `task_${task.id}` ? 'hidden' : 'block'} ${task.subTasks.length <= 0? '':'cursor-pointer'} w-full`}>{task.task}</span>
                                 <input onChange={handleTaskChange} ref={taskInEdit == `task_${task.id}` ? taskInputRef : null} className={`${taskInEdit == `task_${task.id}` ? 'block' : 'hidden'} focus:outline-none w-full`} name='task' type="text" value={taskData.task} />
                                 <div className='flex gap-1.5 md:gap-2 items-center'>
-                                    <button className='p-1 cursor-pointer text-xs rounded-sm bg-red-400 flex items-center justify-center'><RiDeleteBin7Line className='w-2 h-2 text-white md:w-2 md:h-2.5' /></button>
+                                    <button onClick={() => handleTaskDelete(task.id)} className='p-1 cursor-pointer text-xs rounded-sm bg-red-400 flex items-center justify-center'><RiDeleteBin7Line className='w-2 h-2 text-white md:w-2 md:h-2.5' /></button>
                                     <button onClick={() => { setTaskInEdit(taskInEdit == `task_${task.id}` ? null : `task_${task.id}`); setTaskData({task:`${task.task}`, description:`${task.description}`}); setIsSubTasksOpen(null) }} className='p-1 cursor-pointer text-xs rounded-sm bg-blue-400 flex items-center justify-center'><RiEditLine className='w-2 h-2 text-white md:w-2 md:h-2.5' /></button>
                                     <RiSendInsLine onClick={() => {handleTaskUpdate(task_index); setTaskInEdit(null)}} className={`${taskInEdit == `task_${task.id}` ? 'block' : 'hidden'} cursor-pointer w-3 h-3 md:w-4 md:h-4`} />
                                 </div>

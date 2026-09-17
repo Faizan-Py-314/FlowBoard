@@ -68,7 +68,17 @@ def update_feature(feature_id: int, feature_data:FeatureUpdate, project: Annotat
 
     return feature
 
+@router.delete('/{project_id}/{feature_id}', status_code=status.HTTP_404_NOT_FOUND)
+def delete_feature(feature_id: int, project: Annotated[models.Project, Depends(get_project_or_403)], db:Annotated[Session, Depends(get_db)]):
+    result = db.execute(select(models.Feature).where(models.Feature.id == feature_id))
+    feature = result.scalars().first()
+
+    if not feature or feature.project_id != project.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Feature Not Found')
+
+    db.delete(feature)
+    db.commit()
+
 @router.get('/{project_id}', response_model=list[FeatureResponse])
 def get_all_features(project: Annotated[models.Project, Depends(get_project_or_403)]):
     return project.features
-

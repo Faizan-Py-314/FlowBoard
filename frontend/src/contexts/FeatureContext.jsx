@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import { createFeature, fetchAllFeatures, fetchFeature, updateFeature } from '../api'
+import { createFeature, fetchAllFeatures, fetchFeature, updateFeature, deleteFeature } from '../api'
 
 const FeatureContext = createContext({})
 
@@ -58,8 +58,18 @@ const FeatureProvider = ({ children }) => {
         }
     }
 
+    const removeFeature = async (project_id, feature_id) => {
+        try {
+            await deleteFeature(token, project_id, feature_id)
+            return 'success'
+        } catch (error) {
+            console.error('Throw error on Deleting Feature', error)
+            throw error
+        }
+    }
+
   return (
-    <FeatureContext.Provider value={{addFeature, getFeatures, getFeature, editFeature, features, feature}}>
+    <FeatureContext.Provider value={{addFeature, getFeatures, getFeature, editFeature, features, feature, removeFeature}}>
         {children}
     </FeatureContext.Provider>
   )

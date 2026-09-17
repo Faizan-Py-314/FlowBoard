@@ -135,6 +135,17 @@ const updateFeature = async (token, data, project_id, feature_id) => {
     }
 }
 
+const deleteFeature = async (token, project_id, feature_id) => {
+    try {
+        await axios.delete(`${BASE_URL}/api/features/${project_id}/${feature_id}`, 
+            {headers: {Authorization: `Bearer ${token}`}}
+        )
+    } catch (error) {
+        console.error('Deleting feature error', error);
+        throw error
+    }
+}
+
 const createTask = async (token, data, project_id, feature_id) => {
     try {
         const response = await axios.post(`${BASE_URL}/api/tasks/${project_id}/${feature_id}`,
@@ -181,5 +192,16 @@ const updateTask = async (token, data, project_id, feature_id, task_id) => {
     }
 }
 
-export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData, createFeature, fetchAllFeatures, fetchFeature, updateFeature, createTask, fetchTask, fetchAllTasks, updateTask}
+const deleteTask = async (token, project_id, feature_id, task_id) => {
+    try {
+        await axios.delete(`${BASE_URL}/api/tasks/${project_id}/${feature_id}/${task_id}`,
+            {headers: {Authorization: `Bearer ${token}`}}
+        )
+    } catch (error) {
+        console.error('deleting task error', error);
+        throw error
+    }
+}
+
+export {loginUser, registerUser, getUserInfo, fetchProjectsData, createProject, fetchProject, updateProjectData, createFeature, fetchAllFeatures, fetchFeature, updateFeature, deleteFeature, createTask, fetchTask, fetchAllTasks, updateTask, deleteTask}
 

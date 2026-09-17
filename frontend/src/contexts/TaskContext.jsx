@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import { createTask, fetchTask, fetchAllTasks, updateTask } from '../api'
+import { createTask, fetchTask, fetchAllTasks, updateTask, deleteTask } from '../api'
 
 const TaskContext = createContext({})
 
@@ -58,9 +58,19 @@ const TaskProvider = ({ children }) => {
         }
     }
 
+    const removeTask = async (project_id, feature_id, task_id) => {
+        try {
+            await deleteTask(token, project_id, feature_id, task_id)
+            return 'success'
+        } catch (error) {
+            console.error('Throw error on Deleting Task');
+            throw error
+        }
+    }
+
 
   return (
-    <TaskContext.Provider value={{addTask, getTasks, editTask, tasks, task}}>
+    <TaskContext.Provider value={{addTask, getTasks, editTask, removeTask, tasks, task}}>
         { children }
     </TaskContext.Provider>
   )
