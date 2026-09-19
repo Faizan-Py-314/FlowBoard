@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { AuthContext } from '../contexts/AuthContext'
 import { useTheme } from '../contexts/ThemeContext'
 import { RiMenuLine, RiArrowRightSLine, RiArrowDropDownLine } from "@remixicon/react";
-
 
 const Topbar = ({setNavActive}) => {
 
   const navigate = useNavigate()
   const { user } = useContext(AuthContext)
   const { isDark } = useTheme()
+
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const profileName = () => {
     if (user) {
@@ -40,7 +42,7 @@ const Topbar = ({setNavActive}) => {
       <div className={`w-full h-13 p-4 flex justify-between items-center ${borderColor} lg:h-17 lg:px-6 xl:px-10`}>
         <div className='searchBar'>
           <span onClick={() => setNavActive(true)} className={`lg:hidden cursor-pointer ${iconColor}`}><RiMenuLine /></span>
-          <span className={`hidden lg:flex ${textColor}`}>Flow Board <RiArrowRightSLine className={iconColor}/> <strong>Overview</strong> </span>
+          <span className={`hidden lg:flex ${textColor}`}>Flow Board <RiArrowRightSLine className={iconColor}/> <strong>{currentPath == '/'? 'Overview':currentPath == '/tasks'? 'Tasks':'Projects'}</strong> </span>
         </div>
 
         <div className={`${user? 'hidden':'flex'} items-center gap-2 text-xs lg:text-sm lg:gap-4`}>

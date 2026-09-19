@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Search from '../components/Search'
 import ProjectCard from '../components/ProjectCard'
 import { ProjectContext } from '../contexts/ProjectContext'
@@ -13,9 +13,16 @@ const ProjectsPage = () => {
   const [requirmentIsOpen, setRequirmentIsOpen] = useState(false)
   const [FeatureIsOpen, setFeatureIsOpen] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
+  const [tagsFilters, setTagsFilters] = useState([])
+  const [filteredProjects, setFilteredProjects] = useState([])
 
   const { projects } = useContext(ProjectContext)
   const { isDark } = useTheme()
+
+  useEffect(() => {
+    if (tagsFilters.length == 0) {setFilteredProjects(projects)}
+    else {setFilteredProjects(projects.filter(proj => proj.tags.some(tag => tagsFilters.includes(tag.toLowerCase()))))}
+  }, [projects, tagsFilters])
 
   if (!projects) return null;
 
@@ -31,16 +38,16 @@ const ProjectsPage = () => {
         {requirmentIsOpen && <ProjectRequirements isOpen={requirmentIsOpen} setIsOpen={setRequirmentIsOpen} />}
         {FeatureIsOpen && <Features isOpen={FeatureIsOpen} setIsOpen={setFeatureIsOpen}/>}
         <div className='w-full relative px-5'>
-          <Search/>
+          <Search tagsFilters={tagsFilters} setTagsFilters={setTagsFilters} />
           <button onClick={() => {setAddProjectisOpen(true)}} className={`absolute right-6 bottom-0 ${btnPrimary} py-2 px-3 md:py-2.5 md:px-4 lg:py-3 2xl:right-10 rounded-md cursor-pointer`}>
             <RiAddLine className={`w-4 h-4 ${textOnBtn} md:w-4.5 md:h-4.5 lg:hidden`} />
             <span className={`hidden lg:block ${textOnBtn} text-sm`}>New Project</span>
           </button>
         </div>
         <div className='p-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 max-w-8xl mx-auto'>
-          {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} setRequirmentIsOpen={setRequirmentIsOpen} setAddProjectisOpen={setAddProjectisOpen} setIsEditMode={setIsEditMode} setFeatureIsOpen={setFeatureIsOpen} />
-          ))}
+          {filteredProjects.map((project, index) => {
+          return <ProjectCard key={index} project={project} setRequirmentIsOpen={setRequirmentIsOpen} setAddProjectisOpen={setAddProjectisOpen} setIsEditMode={setIsEditMode} setFeatureIsOpen={setFeatureIsOpen} />
+          })}
         </div>
       </div>
     </>

@@ -3,19 +3,30 @@ import { RiSearchLine } from "@remixicon/react";
 import Dropdown from './Dropdown'
 
 
-const Search = () => {
+const Search = ({ tagsFilters, setTagsFilters }) => {
     const { isDark } = useTheme()
 
+    const addAndRemoveTagFilters = (item, isChecked) => {
+        if (isChecked == true) {
+            setTagsFilters(prevTags => [...prevTags, item.label.toLowerCase()])
+        } else {
+            const filterCopy = [...tagsFilters]
+            const itemIndex = filterCopy.indexOf(item.label.toLowerCase())
+            filterCopy.splice(itemIndex, 1)
+            setTagsFilters(filterCopy)
+        }
+    }
+
     const levelOptions = [
-        { label: "Beginner", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
-        { label: "Intermediate", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
-        { label: "Advanced", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+        { label: "Beginner", action: (item, isChecked) => addAndRemoveTagFilters(item, isChecked) },
+        { label: "Intermediate", action: (item, isChecked) => addAndRemoveTagFilters(item, isChecked) },
+        { label: "Advanced", action: (item, isChecked) => addAndRemoveTagFilters(item, isChecked) },
     ];
 
     const statusOptions = [
-        { label: "Future", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
-        { label: "InProgress", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
-        { label: "Completed", action: (item, isChecked) => console.log(`${item.label} is now ${isChecked}`) },
+        { label: "Future", action: (item, isChecked) => addAndRemoveTagFilters(item, isChecked) },
+        { label: "InProgress", action: (item, isChecked) => addAndRemoveTagFilters(item, isChecked) },
+        { label: "Completed", action: (item, isChecked) => addAndRemoveTagFilters(item, isChecked) },
     ];
 
     // Theme classes
